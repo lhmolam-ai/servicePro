@@ -1,0 +1,3176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ServicePro - Plataforma de Reserva de Servicios</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #3b82f6;
+            --secondary: #10b981;
+            --secondary-dark: #059669;
+            --accent: #f59e0b;
+            --accent-dark: #d97706;
+            --light: #f8fafc;
+            --light-gray: #e2e8f0;
+            --dark: #1e293b;
+            --darker: #0f172a;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --info: #3b82f6;
+            --text: #334155;
+            --text-light: #64748b;
+            --border: #cbd5e1;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --radius: 8px;
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --light: #1e293b;
+            --light-gray: #334155;
+            --dark: #f8fafc;
+            --darker: #e2e8f0;
+            --text: #e2e8f0;
+            --text-light: #94a3b8;
+            --border: #475569;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: var(--light);
+            color: var(--text);
+            min-height: 100vh;
+            transition: var(--transition);
+        }
+
+        /* Sync Status */
+        .sync-status {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            background: var(--success);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: var(--shadow);
+        }
+
+        .sync-status.syncing {
+            background: var(--warning);
+        }
+
+        .sync-status.error {
+            background: var(--error);
+        }
+
+        /* Login Modal */
+        .login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+        }
+
+        .login-content {
+            background: var(--light);
+            padding: 40px;
+            border-radius: var(--radius);
+            border: 2px solid var(--primary);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+            background: var(--light);
+            border-radius: var(--radius);
+            color: var(--text);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .login-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border: none;
+            border-radius: var(--radius);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px 0;
+            transition: var(--transition);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .role-selector {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .role-btn {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid transparent;
+            background: var(--light-gray);
+            color: var(--text);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .role-btn.active {
+            border-color: var(--primary);
+            background: rgba(37, 99, 235, 0.1);
+        }
+
+        .register-link {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .register-link a {
+            color: var(--primary);
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        /* Header */
+        .header {
+            background: var(--light);
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-role {
+            background: var(--primary);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            background: none;
+            border: 1px solid var(--error);
+            color: var(--error);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .logout-btn:hover {
+            background: var(--error);
+            color: white;
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 500px;
+            margin: 0 30px;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            background: var(--light);
+            color: var(--text);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--text);
+            cursor: pointer;
+            font-size: 1.1rem;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .action-btn:hover {
+            color: var(--primary);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .language-selector {
+            position: relative;
+        }
+
+        .language-btn {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .language-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--light);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 10px;
+            display: none;
+            z-index: 100;
+            min-width: 120px;
+        }
+
+        .language-dropdown.active {
+            display: block;
+        }
+
+        .language-option {
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .language-option:hover {
+            background: var(--light-gray);
+        }
+
+        /* Hero Banner */
+        .hero {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.9), rgba(16, 185, 129, 0.8)),
+                        var(--hero-image, url('https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80'));
+            background-size: cover;
+            background-position: center;
+            padding: 100px 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--light-gray);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Service Categories */
+        .services-section {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.2rem;
+            color: var(--dark);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: var(--light);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .service-icon {
+            width: 100%;
+            height: 150px;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+        }
+
+        .service-info {
+            padding: 20px;
+        }
+
+        .service-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .service-description {
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+
+        .service-features {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .service-features li {
+            padding: 5px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .service-features li i {
+            color: var(--success);
+        }
+
+        .book-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border: none;
+            border-radius: var(--radius);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .book-btn:hover {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+        }
+
+        /* Dashboard */
+        .dashboard {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: none;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-title {
+            font-size: 2rem;
+            color: var(--dark);
+        }
+
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--light);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary);
+        }
+
+        .stat-card.success {
+            border-left-color: var(--success);
+        }
+
+        .stat-card.warning {
+            border-left-color: var(--warning);
+        }
+
+        .stat-card.error {
+            border-left-color: var(--error);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .dashboard-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--text-light);
+            border-bottom: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Calendar */
+        .calendar-container {
+            background: var(--light);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .calendar-nav-btn {
+            background: var(--light-gray);
+            border: none;
+            border-radius: var(--radius);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .calendar-nav-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .calendar-day {
+            background: var(--light);
+            padding: 10px;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .calendar-day-header {
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-align: center;
+            color: var(--text-light);
+        }
+
+        .calendar-day.today {
+            background: rgba(37, 99, 235, 0.1);
+        }
+
+        .calendar-day.other-month {
+            color: var(--text-light);
+            background: var(--light-gray);
+        }
+
+        .calendar-event {
+            background: var(--primary);
+            color: white;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-top: 5px;
+            cursor: pointer;
+        }
+
+        /* Booking Modal */
+        .booking-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .booking-modal.active {
+            display: flex;
+        }
+
+        .booking-content {
+            background: var(--light);
+            border-radius: var(--radius);
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .booking-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .booking-body {
+            padding: 20px;
+        }
+
+        .booking-step {
+            display: none;
+        }
+
+        .booking-step.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--light);
+            color: var(--text);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .file-upload {
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .file-upload:hover {
+            border-color: var(--primary);
+        }
+
+        .booking-footer {
+            padding: 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn-outline {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 10px 20px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-outline:hover {
+            background: var(--light-gray);
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            position: fixed;
+            top: 0;
+            left: -400px;
+            width: 400px;
+            height: 100vh;
+            background: var(--light);
+            border-right: 1px solid var(--border);
+            transition: var(--transition);
+            z-index: 2000;
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .admin-panel.active {
+            left: 0;
+        }
+
+        .admin-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 1001;
+            box-shadow: var(--shadow);
+            display: none;
+            transition: var(--transition);
+        }
+
+        .admin-toggle.visible {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .admin-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--light);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+        }
+
+        .admin-section h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .admin-table th,
+        .admin-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .admin-table th {
+            background: var(--light-gray);
+            font-weight: 600;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .status-confirmed {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .status-completed {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+        }
+
+        .status-cancelled {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .action-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: var(--transition);
+        }
+
+        .action-btn.edit {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+        }
+
+        .action-btn.delete {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+        }
+
+        .action-btn:hover {
+            opacity: 0.8;
+        }
+
+        /* VOIP Panel */
+        .voip-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--light);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            width: 300px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .voip-panel.active {
+            display: block;
+        }
+
+        .voip-header {
+            background: var(--primary);
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .voip-body {
+            padding: 15px;
+        }
+
+        .voip-contact {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .voip-contact:hover {
+            background: var(--light-gray);
+        }
+
+        .voip-contact:last-child {
+            border-bottom: none;
+        }
+
+        .voip-contact-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .voip-call-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 15px;
+            border-top: 1px solid var(--border);
+        }
+
+        .call-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .call-btn.call {
+            background: var(--success);
+            color: white;
+        }
+
+        .call-btn.hangup {
+            background: var(--error);
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .search-bar {
+                margin: 10px 0;
+                max-width: 100%;
+            }
+
+            .user-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .admin-panel {
+                width: 100%;
+                left: -100%;
+            }
+
+            .voip-panel {
+                width: calc(100% - 40px);
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+
+        .slide-in {
+            animation: slideIn 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sync Status -->
+    <div class="sync-status" id="syncStatus">
+        <i class="fas fa-cloud"></i> <span data-i18n="syncStatus">Sincronizado</span>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="login-modal" id="loginModal">
+        <div class="login-content slide-in">
+            <h2 style="margin-bottom: 30px; color: var(--primary);">
+                <i class="fas fa-tools"></i> <span data-i18n="welcome">Bienvenido a ServicePro</span>
+            </h2>
+            
+            <div class="role-selector" id="roleSelector">
+                <button class="role-btn active" data-role="user" onclick="selectRole('user')">
+                    <i class="fas fa-user"></i> <span data-i18n="user">Usuario</span>
+                </button>
+                <button class="role-btn" data-role="employee" onclick="selectRole('employee')">
+                    <i class="fas fa-briefcase"></i> <span data-i18n="employee">Empleado</span>
+                </button>
+                <button class="role-btn" data-role="admin" onclick="selectRole('admin')">
+                    <i class="fas fa-cog"></i> <span data-i18n="admin">Administrador</span>
+                </button>
+            </div>
+
+            <input type="text" class="login-input" id="loginEmail" placeholder="Correo electrónico" data-i18n-placeholder="email">
+            <input type="password" class="login-input" id="loginPassword" placeholder="Contraseña" data-i18n-placeholder="password">
+            
+            <button class="login-btn" onclick="login()">
+                <i class="fas fa-sign-in-alt"></i> <span data-i18n="login">Iniciar Sesión</span>
+            </button>
+
+            <div class="register-link">
+                <span data-i18n="noAccount">¿No tienes cuenta?</span> <a onclick="showRegister()" data-i18n="registerHere">Regístrate aquí</a>
+            </div>
+
+            <div style="margin-top: 20px; font-size: 0.9rem; opacity: 0.7;">
+                <p data-i18n="demoInfo">Demo: Usa cualquier correo y contraseña</p>
+                <p data-i18n="roleInfo">Selecciona el rol para ver diferentes funcionalidades</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="register-modal" id="registerModal">
+        <div class="login-content slide-in">
+            <h2 style="margin-bottom: 30px; color: var(--primary);">
+                <i class="fas fa-user-plus"></i> <span data-i18n="createAccount">Crear Cuenta</span>
+            </h2>
+
+            <input type="text" class="login-input" id="registerName" placeholder="Nombre completo" data-i18n-placeholder="fullName">
+            <input type="text" class="login-input" id="registerEmail" placeholder="Correo electrónico" data-i18n-placeholder="email">
+            <input type="password" class="login-input" id="registerPassword" placeholder="Contraseña" data-i18n-placeholder="password">
+            <input type="password" class="login-input" id="registerConfirmPassword" placeholder="Confirmar contraseña" data-i18n-placeholder="confirmPassword">
+            
+            <button class="login-btn" onclick="register()">
+                <i class="fas fa-user-plus"></i> <span data-i18n="createAccount">Crear Cuenta</span>
+            </button>
+
+            <div class="register-link">
+                <span data-i18n="haveAccount">¿Ya tienes cuenta?</span> <a onclick="showLogin()" data-i18n="loginHere">Inicia sesión aquí</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header" id="mainHeader" style="display: none;">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon" id="logoIcon"><i class="fas fa-tools"></i></span>
+                <span id="appNameDisplay">ServicePro</span>
+            </div>
+            
+            <div class="search-bar">
+                <input type="text" placeholder="🔍 Buscar servicios..." id="searchInput" data-i18n-placeholder="searchServices">
+            </div>
+
+            <div class="user-actions">
+                <div class="user-info">
+                    <span id="userEmail">usuario@ejemplo.com</span>
+                    <span class="user-role" id="userRole">Usuario</span>
+                    <button class="logout-btn" onclick="logout()" data-i18n="logout">Cerrar Sesión</button>
+                </div>
+                
+                <button class="action-btn" id="voipButton" onclick="toggleVoip()" title="Comunicaciones VOIP">
+                    <i class="fas fa-phone-alt"></i>
+                </button>
+                
+                <div class="language-selector">
+                    <button class="language-btn" onclick="toggleLanguageDropdown()">
+                        <i class="fas fa-globe"></i> <span id="currentLanguage">ES</span>
+                    </button>
+                    <div class="language-dropdown" id="languageDropdown">
+                        <div class="language-option" onclick="changeLanguage('es')">Español</div>
+                        <div class="language-option" onclick="changeLanguage('en')">English</div>
+                    </div>
+                </div>
+                
+                <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="hero" id="heroSection" style="display: none;">
+        <div class="fade-in">
+            <h1 id="heroTitleDisplay" data-i18n="heroTitle">Servicios Profesionales para tu Hogar</h1>
+            <p id="heroSubtitleDisplay" data-i18n="heroSubtitle">
+                Reserva fácilmente servicios de reparación, mantenimiento e instalación con profesionales certificados
+            </p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" onclick="showBookingModal()">
+                    <i class="fas fa-calendar-plus"></i> <span data-i18n="bookAppointment">Reservar Cita</span>
+                </button>
+                <button class="btn btn-secondary" onclick="scrollToServices()">
+                    <i class="fas fa-concierge-bell"></i> <span data-i18n="viewServices">Ver Servicios</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services-section" id="servicesSection" style="display: none;">
+        <h2 class="section-title" data-i18n="ourServices">Nuestros Servicios</h2>
+        <div class="services-grid" id="servicesGrid">
+            <!-- Los servicios se cargan dinámicamente -->
+        </div>
+    </section>
+
+    <!-- Dashboard (para empleados y administradores) -->
+    <section class="dashboard" id="dashboard">
+        <div class="dashboard-header">
+            <h2 class="dashboard-title" data-i18n="dashboard">Panel de Control</h2>
+            <div class="dashboard-actions">
+                <button class="btn btn-primary" onclick="showBookingModal()">
+                    <i class="fas fa-plus"></i> <span data-i18n="newBooking">Nueva Reserva</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="dashboard-cards">
+            <div class="stat-card">
+                <div class="stat-value" id="totalBookings">0</div>
+                <div class="stat-label" data-i18n="totalBookings">Total Reservas</div>
+            </div>
+            <div class="stat-card success">
+                <div class="stat-value" id="confirmedBookings">0</div>
+                <div class="stat-label" data-i18n="confirmed">Confirmadas</div>
+            </div>
+            <div class="stat-card warning">
+                <div class="stat-value" id="pendingBookings">0</div>
+                <div class="stat-label" data-i18n="pending">Pendientes</div>
+            </div>
+            <div class="stat-card error">
+                <div class="stat-value" id="cancelledBookings">0</div>
+                <div class="stat-label" data-i18n="cancelled">Canceladas</div>
+            </div>
+        </div>
+
+        <div class="dashboard-tabs">
+            <button class="tab-btn active" onclick="switchTab('calendar')" data-i18n="calendar">Calendario</button>
+            <button class="tab-btn" onclick="switchTab('bookings')" data-i18n="bookings">Reservas</button>
+            <button class="tab-btn" onclick="switchTab('customers')" data-i18n="customers">Clientes</button>
+            <button class="tab-btn" onclick="switchTab('services')" data-i18n="services">Servicios</button>
+        </div>
+
+        <div class="tab-content active" id="calendarTab">
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <h3 id="currentMonth">Enero 2024</h3>
+                    <div class="calendar-nav">
+                        <button class="calendar-nav-btn" onclick="changeMonth(-1)">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="calendar-nav-btn" onclick="changeMonth(1)">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="calendar-grid" id="calendarGrid">
+                    <!-- El calendario se genera dinámicamente -->
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="bookingsTab">
+            <div class="admin-section">
+                <h3 data-i18n="recentBookings">Reservas Recientes</h3>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th data-i18n="id">ID</th>
+                            <th data-i18n="customer">Cliente</th>
+                            <th data-i18n="service">Servicio</th>
+                            <th data-i18n="date">Fecha</th>
+                            <th data-i18n="status">Estado</th>
+                            <th data-i18n="actions">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bookingsTable">
+                        <!-- Las reservas se cargan dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="tab-content" id="customersTab">
+            <div class="admin-section">
+                <h3 data-i18n="customers">Clientes</h3>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th data-i18n="name">Nombre</th>
+                            <th data-i18n="email">Email</th>
+                            <th data-i18n="phone">Teléfono</th>
+                            <th data-i18n="bookings">Reservas</th>
+                            <th data-i18n="actions">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customersTable">
+                        <!-- Los clientes se cargan dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="tab-content" id="servicesTab">
+            <div class="admin-section">
+                <h3 data-i18n="servicesManagement">Gestión de Servicios</h3>
+                <button class="btn btn-primary" onclick="showServiceEditor()" style="margin-bottom: 15px;">
+                    <i class="fas fa-plus"></i> <span data-i18n="addService">Agregar Servicio</span>
+                </button>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th data-i18n="service">Servicio</th>
+                            <th data-i18n="category">Categoría</th>
+                            <th data-i18n="price">Precio</th>
+                            <th data-i18n="duration">Duración</th>
+                            <th data-i18n="actions">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="servicesTable">
+                        <!-- Los servicios se cargan dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Modal -->
+    <div class="booking-modal" id="bookingModal">
+        <div class="booking-content">
+            <div class="booking-header">
+                <h3 data-i18n="bookService">Reservar Servicio</h3>
+                <button class="action-btn" onclick="closeBookingModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="booking-body">
+                <div class="booking-step active" id="step1">
+                    <h4 data-i18n="selectService">Selecciona un Servicio</h4>
+                    <div class="services-grid" id="bookingServicesGrid">
+                        <!-- Los servicios para reserva se cargan dinámicamente -->
+                    </div>
+                </div>
+                <div class="booking-step" id="step2">
+                    <h4 data-i18n="serviceDetails">Detalles del Servicio</h4>
+                    <div class="form-group">
+                        <label class="form-label" data-i18n="service">Servicio</label>
+                        <div class="form-control" id="selectedServiceName">-</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" data-i18n="description">Descripción del Problema</label>
+                        <textarea class="form-control form-textarea" id="problemDescription" placeholder="Describe el problema o servicio que necesitas..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" data-i18n="uploadImages">Subir Imágenes (Opcional)</label>
+                        <div class="file-upload" onclick="document.getElementById('imageUpload').click()">
+                            <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                            <p data-i18n="uploadHint">Haz clic para subir imágenes o arrástralas aquí</p>
+                            <input type="file" id="imageUpload" multiple accept="image/*" style="display: none;">
+                        </div>
+                        <div id="uploadedImages" style="margin-top: 10px;"></div>
+                    </div>
+                </div>
+                <div class="booking-step" id="step3">
+                    <h4 data-i18n="schedule">Programar Cita</h4>
+                    <div class="form-group">
+                        <label class="form-label" data-i18n="preferredDate">Fecha Preferida</label>
+                        <input type="date" class="form-control" id="preferredDate" min="">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" data-i18n="preferredTime">Hora Preferida</label>
+                        <select class="form-control" id="preferredTime">
+                            <option value="09:00">09:00 AM</option>
+                            <option value="10:00">10:00 AM</option>
+                            <option value="11:00">11:00 AM</option>
+                            <option value="12:00">12:00 PM</option>
+                            <option value="13:00">01:00 PM</option>
+                            <option value="14:00">02:00 PM</option>
+                            <option value="15:00">03:00 PM</option>
+                            <option value="16:00">04:00 PM</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="booking-step" id="step4">
+                    <h4 data-i18n="contactInfo">Información de Contacto</h4>
+                    <div class="form-group">
+                        <label class="form-label" data-i18n="fullName">Nombre Completo</label>
+                        <input type="text" class="form-control" id="customerName">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" data-i18n="email">Email</label>
+                        <input type="email" class="form-control" id="customerEmail">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" data-i18n="phone">Teléfono</label>
+                        <input type="tel" class="form-control" id="customerPhone">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" data-i18n="address">Dirección</label>
+                        <textarea class="form-control form-textarea" id="customerAddress" placeholder="Dirección donde se realizará el servicio..."></textarea>
+                    </div>
+                </div>
+                <div class="booking-step" id="step5">
+                    <h4 data-i18n="confirmation">Confirmación</h4>
+                    <div class="form-group">
+                        <div style="background: var(--light-gray); padding: 15px; border-radius: var(--radius);">
+                            <h5 data-i18n="bookingSummary">Resumen de la Reserva</h5>
+                            <p><strong data-i18n="service">Servicio:</strong> <span id="summaryService">-</span></p>
+                            <p><strong data-i18n="date">Fecha:</strong> <span id="summaryDate">-</span></p>
+                            <p><strong data-i18n="time">Hora:</strong> <span id="summaryTime">-</span></p>
+                            <p><strong data-i18n="customer">Cliente:</strong> <span id="summaryCustomer">-</span></p>
+                            <p><strong data-i18n="address">Dirección:</strong> <span id="summaryAddress">-</span></p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <input type="checkbox" id="termsAgreement"> 
+                            <span data-i18n="agreeTerms">Acepto los términos y condiciones del servicio</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="booking-footer">
+                <button class="btn btn-outline" id="prevBtn" onclick="prevStep()" style="display: none;" data-i18n="previous">Anterior</button>
+                <button class="btn btn-primary" id="nextBtn" onclick="nextStep()" data-i18n="next">Siguiente</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <button class="admin-toggle" id="adminToggle" onclick="toggleAdminPanel()">
+        <i class="fas fa-cog"></i>
+    </button>
+
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-section">
+            <h3 data-i18n="systemConfig">Configuración del Sistema</h3>
+            <div class="form-group">
+                <label class="form-label" data-i18n="companyName">Nombre de la Empresa</label>
+                <input type="text" class="form-control" id="companyName" value="ServicePro">
+            </div>
+            <div class="form-group">
+                <label class="form-label" data-i18n="primaryColor">Color Primario</label>
+                <input type="color" class="form-control" id="primaryColor" value="#2563eb">
+            </div>
+            <div class="form-group">
+                <label class="form-label" data-i18n="secondaryColor">Color Secundario</label>
+                <input type="color" class="form-control" id="secondaryColor" value="#10b981">
+            </div>
+            <button class="btn btn-primary" onclick="saveSystemConfig()" style="width: 100%;" data-i18n="saveConfig">Guardar Configuración</button>
+        </div>
+
+        <div class="admin-section">
+            <h3 data-i18n="userManagement">Gestión de Usuarios</h3>
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th data-i18n="name">Nombre</th>
+                        <th data-i18n="email">Email</th>
+                        <th data-i18n="role">Rol</th>
+                        <th data-i18n="actions">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTable">
+                    <!-- Los usuarios se cargan dinámicamente -->
+                </tbody>
+            </table>
+            <button class="btn btn-primary" onclick="showUserEditor()" style="margin-top: 15px; width: 100%;" data-i18n="addUser">Agregar Usuario</button>
+        </div>
+
+        <div class="admin-section">
+            <h3 data-i18n="voipConfig">Configuración VOIP</h3>
+            <div class="form-group">
+                <label class="form-label" data-i18n="twilioAccountSID">Twilio Account SID</label>
+                <input type="text" class="form-control" id="twilioSID" placeholder="AC...">
+            </div>
+            <div class="form-group">
+                <label class="form-label" data-i18n="twilioAuthToken">Twilio Auth Token</label>
+                <input type="password" class="form-control" id="twilioToken" placeholder="...">
+            </div>
+            <div class="form-group">
+                <label class="form-label" data-i18n="twilioPhoneNumber">Número de Teléfono Twilio</label>
+                <input type="text" class="form-control" id="twilioPhone" placeholder="+1234567890">
+            </div>
+            <button class="btn btn-primary" onclick="saveVoipConfig()" style="width: 100%;" data-i18n="saveConfig">Guardar Configuración</button>
+        </div>
+    </div>
+
+    <!-- VOIP Panel -->
+    <div class="voip-panel" id="voipPanel">
+        <div class="voip-header">
+            <h4 data-i18n="communications">Comunicaciones</h4>
+            <button class="action-btn" onclick="toggleVoip()" style="color: white;">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="voip-body">
+            <div class="voip-contact" onclick="startCall('Juan Pérez')">
+                <div class="voip-contact-avatar">JP</div>
+                <div>
+                    <div>Juan Pérez</div>
+                    <div style="font-size: 0.8rem; opacity: 0.7;">Cliente - Reparación de Lavadora</div>
+                </div>
+            </div>
+            <div class="voip-contact" onclick="startCall('María García')">
+                <div class="voip-contact-avatar">MG</div>
+                <div>
+                    <div>María García</div>
+                    <div style="font-size: 0.8rem; opacity: 0.7;">Cliente - Instalación de Aire Acondicionado</div>
+                </div>
+            </div>
+            <div class="voip-contact" onclick="startCall('Carlos López')">
+                <div class="voip-contact-avatar">CL</div>
+                <div>
+                    <div>Carlos López</div>
+                    <div style="font-size: 0.8rem; opacity: 0.7;">Técnico - Zona Norte</div>
+                </div>
+            </div>
+        </div>
+        <div class="voip-call-controls" id="callControls" style="display: none;">
+            <button class="call-btn hangup" onclick="endCall()">
+                <i class="fas fa-phone-slash"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // =============================================
+        // SISTEMA DE PERSISTENCIA JSON + LOCALSTORAGE
+        // =============================================
+        class JSONDatabase {
+            constructor() {
+                this.localStorageKey = 'servicepro_database';
+                this.lastSyncKey = 'servicepro_last_sync';
+                this.data = this.getDefaultData();
+                this.init();
+            }
+
+            getDefaultData() {
+                return {
+                    users: [
+                        {
+                            id: 1,
+                            name: "Administrador",
+                            email: "admin@servicepro.com",
+                            password: "admin2025",
+                            role: "admin",
+                            created_at: new Date().toISOString()
+                        },
+                        {
+                            id: 2,
+                            name: "David",
+                            email: "david@servicepro.com",
+                            password: "david2025",
+                            role: "admin",
+                            created_at: new Date().toISOString()
+                        },
+                        {
+                            id: 3,
+                            name: "Técnico Juan",
+                            email: "juan@servicepro.com",
+                            password: "juan2025",
+                            role: "employee",
+                            created_at: new Date().toISOString()
+                        }
+                    ],
+                    services: [
+                        {
+                            id: 1,
+                            name: "Reparación de Lavadoras",
+                            category: "appliance",
+                            price: 75.00,
+                            duration: 120,
+                            description: "Reparación profesional de lavadoras de todas las marcas",
+                            features: ["Diagnóstico gratuito", "Reparación en el lugar", "Garantía de 90 días"],
+                            icon: "fas fa-washing-machine"
+                        },
+                        {
+                            id: 2,
+                            name: "Reparación de Secadoras",
+                            category: "appliance",
+                            price: 70.00,
+                            duration: 120,
+                            description: "Reparación de secadoras eléctricas y a gas",
+                            features: ["Diagnóstico gratuito", "Reparación en el lugar", "Garantía de 90 días"],
+                            icon: "fas fa-tint"
+                        },
+                        {
+                            id: 3,
+                            name: "Reparación de Neveras",
+                            category: "appliance",
+                            price: 85.00,
+                            duration: 150,
+                            description: "Reparación de refrigeradores y congeladores",
+                            features: ["Diagnóstico gratuito", "Reparación en el lugar", "Garantía de 90 días"],
+                            icon: "fas fa-snowflake"
+                        },
+                        {
+                            id: 4,
+                            name: "Reparación General",
+                            category: "handyman",
+                            price: 65.00,
+                            duration: 120,
+                            description: "Reparaciones generales del hogar",
+                            features: ["Multitud de servicios", "Profesionales certificados", "Garantía de trabajo"],
+                            icon: "fas fa-tools"
+                        },
+                        {
+                            id: 5,
+                            name: "Reparación de Cerraduras",
+                            category: "handyman",
+                            price: 55.00,
+                            duration: 60,
+                            description: "Reparación e instalación de cerraduras y cerrojos",
+                            features: ["Servicio de emergencia", "Cerraduras de todas las marcas", "Instalación profesional"],
+                            icon: "fas fa-key"
+                        },
+                        {
+                            id: 6,
+                            name: "Instalación de Inodoros",
+                            category: "plumbing",
+                            price: 120.00,
+                            duration: 120,
+                            description: "Instalación y reemplazo de inodoros",
+                            features: ["Instalación profesional", "Pruebas de fugas", "Limpieza posterior al trabajo"],
+                            icon: "fas fa-toilet"
+                        },
+                        {
+                            id: 7,
+                            name: "Pintura de Interiores",
+                            category: "painting",
+                            price: 200.00,
+                            duration: 240,
+                            description: "Pintura profesional de interiores",
+                            features: ["Preparación de superficies", "Pintura de calidad", "Limpieza posterior"],
+                            icon: "fas fa-paint-roller"
+                        }
+                    ],
+                    bookings: [],
+                    customers: [],
+                    config: {
+                        company_name: "ServicePro",
+                        primary_color: "#2563eb",
+                        secondary_color: "#10b981",
+                        language: "es",
+                        theme: "light",
+                        voip_twilio_sid: "",
+                        voip_twilio_token: "",
+                        voip_twilio_phone: ""
+                    },
+                    last_updated: new Date().toISOString()
+                };
+            }
+
+            async init() {
+                this.loadFromLocalStorage();
+                this.setupAutoSave();
+            }
+
+            loadFromLocalStorage() {
+                const stored = localStorage.getItem(this.localStorageKey);
+                if (stored) {
+                    this.data = JSON.parse(stored);
+                } else {
+                    this.saveToLocalStorage();
+                }
+            }
+
+            saveToLocalStorage() {
+                this.data.last_updated = new Date().toISOString();
+                localStorage.setItem(this.localStorageKey, JSON.stringify(this.data));
+                localStorage.setItem(this.lastSyncKey, Date.now().toString());
+            }
+
+            setupAutoSave() {
+                setInterval(() => {
+                    this.saveToLocalStorage();
+                }, 30000);
+            }
+
+            updateSyncStatus(message) {
+                const statusElement = document.getElementById('syncStatus');
+                if (statusElement) {
+                    statusElement.innerHTML = `<i class="fas fa-cloud"></i> <span data-i18n="syncStatus">${message}</span>`;
+                    this.applyTranslations();
+                    
+                    if (message.includes('Sincronizando')) {
+                        statusElement.classList.add('syncing');
+                    } else if (message.includes('Error')) {
+                        statusElement.classList.add('error');
+                    } else {
+                        statusElement.classList.remove('syncing', 'error');
+                    }
+                }
+            }
+
+            // ========== MÉTODOS PARA USUARIOS ==========
+            createUser(user) {
+                user.id = Date.now();
+                user.created_at = new Date().toISOString();
+                this.data.users.push(user);
+                this.saveToLocalStorage();
+                return true;
+            }
+
+            getUserByEmail(email) {
+                return this.data.users.find(user => user.email === email) || null;
+            }
+
+            getUsers() {
+                return this.data.users;
+            }
+
+            updateUser(id, updates) {
+                const index = this.data.users.findIndex(u => u.id === id);
+                if (index !== -1) {
+                    this.data.users[index] = { ...this.data.users[index], ...updates };
+                    this.saveToLocalStorage();
+                    return true;
+                }
+                return false;
+            }
+
+            deleteUser(id) {
+                this.data.users = this.data.users.filter(u => u.id !== id);
+                this.saveToLocalStorage();
+                return true;
+            }
+
+            // ========== MÉTODOS PARA SERVICIOS ==========
+            getServices() {
+                return this.data.services;
+            }
+
+            getServicesByCategory(category) {
+                return this.data.services.filter(service => service.category === category);
+            }
+
+            createService(service) {
+                service.id = Date.now();
+                this.data.services.push(service);
+                this.saveToLocalStorage();
+                return true;
+            }
+
+            updateService(id, updates) {
+                const index = this.data.services.findIndex(s => s.id === id);
+                if (index !== -1) {
+                    this.data.services[index] = { ...this.data.services[index], ...updates };
+                    this.saveToLocalStorage();
+                    return true;
+                }
+                return false;
+            }
+
+            deleteService(id) {
+                this.data.services = this.data.services.filter(s => s.id !== id);
+                this.saveToLocalStorage();
+                return true;
+            }
+
+            // ========== MÉTODOS PARA RESERVAS ==========
+            createBooking(booking) {
+                booking.id = Date.now();
+                booking.created_at = new Date().toISOString();
+                booking.status = 'pending';
+                this.data.bookings.push(booking);
+                
+                // Agregar cliente si no existe
+                const existingCustomer = this.data.customers.find(c => c.email === booking.customer_email);
+                if (!existingCustomer) {
+                    this.data.customers.push({
+                        id: Date.now(),
+                        name: booking.customer_name,
+                        email: booking.customer_email,
+                        phone: booking.customer_phone,
+                        address: booking.customer_address,
+                        created_at: new Date().toISOString()
+                    });
+                }
+                
+                this.saveToLocalStorage();
+                return true;
+            }
+
+            getBookings() {
+                return this.data.bookings;
+            }
+
+            getBookingsByStatus(status) {
+                return this.data.bookings.filter(booking => booking.status === status);
+            }
+
+            updateBooking(id, updates) {
+                const index = this.data.bookings.findIndex(b => b.id === id);
+                if (index !== -1) {
+                    this.data.bookings[index] = { ...this.data.bookings[index], ...updates };
+                    this.saveToLocalStorage();
+                    return true;
+                }
+                return false;
+            }
+
+            // ========== MÉTODOS PARA CLIENTES ==========
+            getCustomers() {
+                return this.data.customers;
+            }
+
+            // ========== MÉTODOS PARA CONFIGURACIÓN ==========
+            getConfig() {
+                return this.data.config;
+            }
+
+            updateConfig(key, value) {
+                this.data.config[key] = value;
+                this.saveToLocalStorage();
+                return true;
+            }
+
+            // Exportar datos para backup
+            exportData() {
+                return JSON.stringify(this.data, null, 2);
+            }
+
+            // Importar datos desde backup
+            importData(jsonData) {
+                try {
+                    this.data = JSON.parse(jsonData);
+                    this.saveToLocalStorage();
+                    return true;
+                } catch (error) {
+                    console.error('Error importing data:', error);
+                    return false;
+                }
+            }
+        }
+
+        // =============================================
+        // SISTEMA DE AUTENTICACIÓN Y ROLES
+        // =============================================
+        class AuthManager {
+            constructor() {
+                this.currentUser = null;
+                this.checkAuth();
+            }
+
+            checkAuth() {
+                const savedUser = localStorage.getItem('servicepro_user');
+                if (savedUser) {
+                    this.currentUser = JSON.parse(savedUser);
+                    this.handleAuthSuccess();
+                } else {
+                    this.showLogin();
+                }
+            }
+
+            login(email, password, role) {
+                // Buscar usuario en la base de datos
+                const user = window.dbManager.getUserByEmail(email);
+                
+                if (user && user.password === password) {
+                    this.currentUser = {
+                        id: user.id,
+                        email: user.email,
+                        role: user.role,
+                        name: user.name,
+                        loginTime: new Date().toISOString()
+                    };
+
+                    localStorage.setItem('servicepro_user', JSON.stringify(this.currentUser));
+                    this.handleAuthSuccess();
+                } else if (email && password) {
+                    // Modo demo: permitir login sin usuario en DB
+                    this.currentUser = {
+                        id: Date.now(),
+                        email: email,
+                        role: role,
+                        name: email.split('@')[0],
+                        loginTime: new Date().toISOString()
+                    };
+
+                    localStorage.setItem('servicepro_user', JSON.stringify(this.currentUser));
+                    this.handleAuthSuccess();
+                } else {
+                    alert(this.translate('invalidCredentials'));
+                }
+            }
+
+            register(name, email, password) {
+                // Verificar si el usuario ya existe
+                const existingUser = window.dbManager.getUserByEmail(email);
+                if (existingUser) {
+                    alert(this.translate('emailExists'));
+                    return false;
+                }
+
+                // Crear nuevo usuario en la base de datos
+                const success = window.dbManager.createUser({
+                    name: name,
+                    email: email,
+                    password: password,
+                    role: 'user'
+                });
+
+                if (success) {
+                    alert(this.translate('accountCreated'));
+                    return true;
+                } else {
+                    alert(this.translate('accountError'));
+                    return false;
+                }
+            }
+
+            logout() {
+                this.currentUser = null;
+                localStorage.removeItem('servicepro_user');
+                this.showLogin();
+            }
+
+            handleAuthSuccess() {
+                this.hideLogin();
+                this.updateUIForRole();
+                
+                if (this.currentUser.role === 'admin' || this.currentUser.role === 'employee') {
+                    this.showDashboard();
+                } else {
+                    this.showUserInterface();
+                }
+            }
+
+            showLogin() {
+                document.getElementById('loginModal').style.display = 'flex';
+                document.getElementById('registerModal').style.display = 'none';
+                document.getElementById('mainHeader').style.display = 'none';
+                document.getElementById('heroSection').style.display = 'none';
+                document.getElementById('servicesSection').style.display = 'none';
+                document.getElementById('dashboard').classList.remove('active');
+                
+                const hasLoggedInBefore = localStorage.getItem('servicepro_has_logged_in');
+                if (hasLoggedInBefore) {
+                    document.getElementById('roleSelector').style.display = 'none';
+                    selectRole('user');
+                } else {
+                    document.getElementById('roleSelector').style.display = 'flex';
+                }
+            }
+
+            hideLogin() {
+                document.getElementById('loginModal').style.display = 'none';
+                localStorage.setItem('servicepro_has_logged_in', 'true');
+            }
+
+            updateUIForRole() {
+                document.getElementById('userEmail').textContent = this.currentUser.email;
+                
+                let roleText = '';
+                switch(this.currentUser.role) {
+                    case 'admin': roleText = this.translate('admin'); break;
+                    case 'employee': roleText = this.translate('employee'); break;
+                    default: roleText = this.translate('user');
+                }
+                document.getElementById('userRole').textContent = roleText;
+                
+                const adminToggle = document.getElementById('adminToggle');
+                const voipButton = document.getElementById('voipButton');
+                
+                if (this.currentUser.role === 'admin' || this.currentUser.role === 'employee') {
+                    adminToggle.classList.add('visible');
+                    voipButton.style.display = 'block';
+                } else {
+                    adminToggle.classList.remove('visible');
+                    voipButton.style.display = 'block';
+                    document.getElementById('adminPanel').classList.remove('active');
+                }
+            }
+
+            showDashboard() {
+                document.getElementById('mainHeader').style.display = 'block';
+                document.getElementById('dashboard').classList.add('active');
+                document.getElementById('heroSection').style.display = 'none';
+                document.getElementById('servicesSection').style.display = 'none';
+                
+                if (window.dashboardManager) {
+                    window.dashboardManager.loadDashboard();
+                }
+            }
+
+            showUserInterface() {
+                document.getElementById('mainHeader').style.display = 'block';
+                document.getElementById('heroSection').style.display = 'block';
+                document.getElementById('servicesSection').style.display = 'block';
+                document.getElementById('dashboard').classList.remove('active');
+                
+                if (window.serviceManager) {
+                    window.serviceManager.renderServices();
+                }
+            }
+
+            isAdmin() {
+                return this.currentUser && this.currentUser.role === 'admin';
+            }
+
+            isEmployee() {
+                return this.currentUser && (this.currentUser.role === 'employee' || this.currentUser.role === 'admin');
+            }
+
+            isUser() {
+                return this.currentUser && this.currentUser.role === 'user';
+            }
+
+            translate(key) {
+                return window.i18nManager ? window.i18nManager.translate(key) : key;
+            }
+        }
+
+        // =============================================
+        // SISTEMA DE INTERNACIONALIZACIÓN (i18n)
+        // =============================================
+        class I18nManager {
+            constructor() {
+                this.currentLanguage = 'es';
+                this.translations = {
+                    es: {
+                        // Login y Autenticación
+                        welcome: "Bienvenido a ServicePro",
+                        user: "Usuario",
+                        employee: "Empleado",
+                        admin: "Administrador",
+                        email: "Correo electrónico",
+                        password: "Contraseña",
+                        login: "Iniciar Sesión",
+                        noAccount: "¿No tienes cuenta?",
+                        registerHere: "Regístrate aquí",
+                        createAccount: "Crear Cuenta",
+                        fullName: "Nombre completo",
+                        confirmPassword: "Confirmar contraseña",
+                        haveAccount: "¿Ya tienes cuenta?",
+                        loginHere: "Inicia sesión aquí",
+                        logout: "Cerrar Sesión",
+                        demoInfo: "Demo: Usa cualquier correo y contraseña",
+                        roleInfo: "Selecciona el rol para ver diferentes funcionalidades",
+                        invalidCredentials: "Credenciales incorrectas. Por favor regístrese primero.",
+                        emailExists: "Este correo electrónico ya está registrado.",
+                        accountCreated: "Cuenta creada exitosamente. Ahora puede iniciar sesión.",
+                        accountError: "Error al crear la cuenta. Intente nuevamente.",
+                        
+                        // Header y Navegación
+                        searchServices: "Buscar servicios...",
+                        communications: "Comunicaciones",
+                        
+                        // Hero Section
+                        heroTitle: "Servicios Profesionales para tu Hogar",
+                        heroSubtitle: "Reserva fácilmente servicios de reparación, mantenimiento e instalación con profesionales certificados",
+                        bookAppointment: "Reservar Cita",
+                        viewServices: "Ver Servicios",
+                        
+                        // Servicios
+                        ourServices: "Nuestros Servicios",
+                        
+                        // Dashboard
+                        dashboard: "Panel de Control",
+                        newBooking: "Nueva Reserva",
+                        totalBookings: "Total Reservas",
+                        confirmed: "Confirmadas",
+                        pending: "Pendientes",
+                        cancelled: "Canceladas",
+                        calendar: "Calendario",
+                        bookings: "Reservas",
+                        customers: "Clientes",
+                        services: "Servicios",
+                        recentBookings: "Reservas Recientes",
+                        id: "ID",
+                        customer: "Cliente",
+                        service: "Servicio",
+                        date: "Fecha",
+                        status: "Estado",
+                        actions: "Acciones",
+                        name: "Nombre",
+                        phone: "Teléfono",
+                        bookings: "Reservas",
+                        servicesManagement: "Gestión de Servicios",
+                        addService: "Agregar Servicio",
+                        category: "Categoría",
+                        price: "Precio",
+                        duration: "Duración",
+                        
+                        // Reservas
+                        bookService: "Reservar Servicio",
+                        selectService: "Selecciona un Servicio",
+                        serviceDetails: "Detalles del Servicio",
+                        description: "Descripción del Problema",
+                        uploadImages: "Subir Imágenes (Opcional)",
+                        uploadHint: "Haz clic para subir imágenes o arrástralas aquí",
+                        schedule: "Programar Cita",
+                        preferredDate: "Fecha Preferida",
+                        preferredTime: "Hora Preferida",
+                        contactInfo: "Información de Contacto",
+                        address: "Dirección",
+                        confirmation: "Confirmación",
+                        bookingSummary: "Resumen de la Reserva",
+                        time: "Hora",
+                        agreeTerms: "Acepto los términos y condiciones del servicio",
+                        previous: "Anterior",
+                        next: "Siguiente",
+                        
+                        // Estados
+                        statusPending: "Pendiente",
+                        statusConfirmed: "Confirmada",
+                        statusCompleted: "Completada",
+                        statusCancelled: "Cancelada",
+                        
+                        // Panel de Administración
+                        systemConfig: "Configuración del Sistema",
+                        companyName: "Nombre de la Empresa",
+                        primaryColor: "Color Primario",
+                        secondaryColor: "Color Secundario",
+                        saveConfig: "Guardar Configuración",
+                        userManagement: "Gestión de Usuarios",
+                        role: "Rol",
+                        addUser: "Agregar Usuario",
+                        voipConfig: "Configuración VOIP",
+                        twilioAccountSID: "Twilio Account SID",
+                        twilioAuthToken: "Twilio Auth Token",
+                        twilioPhoneNumber: "Número de Teléfono Twilio",
+                        
+                        // Sincronización
+                        syncStatus: "Sincronizado"
+                    },
+                    en: {
+                        // Login and Authentication
+                        welcome: "Welcome to ServicePro",
+                        user: "User",
+                        employee: "Employee",
+                        admin: "Administrator",
+                        email: "Email",
+                        password: "Password",
+                        login: "Login",
+                        noAccount: "Don't have an account?",
+                        registerHere: "Register here",
+                        createAccount: "Create Account",
+                        fullName: "Full Name",
+                        confirmPassword: "Confirm Password",
+                        haveAccount: "Already have an account?",
+                        loginHere: "Login here",
+                        logout: "Logout",
+                        demoInfo: "Demo: Use any email and password",
+                        roleInfo: "Select role to see different functionalities",
+                        invalidCredentials: "Invalid credentials. Please register first.",
+                        emailExists: "This email is already registered.",
+                        accountCreated: "Account created successfully. You can now login.",
+                        accountError: "Error creating account. Please try again.",
+                        
+                        // Header and Navigation
+                        searchServices: "Search services...",
+                        communications: "Communications",
+                        
+                        // Hero Section
+                        heroTitle: "Professional Services for Your Home",
+                        heroSubtitle: "Easily book repair, maintenance and installation services with certified professionals",
+                        bookAppointment: "Book Appointment",
+                        viewServices: "View Services",
+                        
+                        // Services
+                        ourServices: "Our Services",
+                        
+                        // Dashboard
+                        dashboard: "Dashboard",
+                        newBooking: "New Booking",
+                        totalBookings: "Total Bookings",
+                        confirmed: "Confirmed",
+                        pending: "Pending",
+                        cancelled: "Cancelled",
+                        calendar: "Calendar",
+                        bookings: "Bookings",
+                        customers: "Customers",
+                        services: "Services",
+                        recentBookings: "Recent Bookings",
+                        id: "ID",
+                        customer: "Customer",
+                        service: "Service",
+                        date: "Date",
+                        status: "Status",
+                        actions: "Actions",
+                        name: "Name",
+                        phone: "Phone",
+                        bookings: "Bookings",
+                        servicesManagement: "Services Management",
+                        addService: "Add Service",
+                        category: "Category",
+                        price: "Price",
+                        duration: "Duration",
+                        
+                        // Bookings
+                        bookService: "Book Service",
+                        selectService: "Select a Service",
+                        serviceDetails: "Service Details",
+                        description: "Problem Description",
+                        uploadImages: "Upload Images (Optional)",
+                        uploadHint: "Click to upload images or drag them here",
+                        schedule: "Schedule Appointment",
+                        preferredDate: "Preferred Date",
+                        preferredTime: "Preferred Time",
+                        contactInfo: "Contact Information",
+                        address: "Address",
+                        confirmation: "Confirmation",
+                        bookingSummary: "Booking Summary",
+                        time: "Time",
+                        agreeTerms: "I agree to the service terms and conditions",
+                        previous: "Previous",
+                        next: "Next",
+                        
+                        // Statuses
+                        statusPending: "Pending",
+                        statusConfirmed: "Confirmed",
+                        statusCompleted: "Completed",
+                        statusCancelled: "Cancelled",
+                        
+                        // Admin Panel
+                        systemConfig: "System Configuration",
+                        companyName: "Company Name",
+                        primaryColor: "Primary Color",
+                        secondaryColor: "Secondary Color",
+                        saveConfig: "Save Configuration",
+                        userManagement: "User Management",
+                        role: "Role",
+                        addUser: "Add User",
+                        voipConfig: "VOIP Configuration",
+                        twilioAccountSID: "Twilio Account SID",
+                        twilioAuthToken: "Twilio Auth Token",
+                        twilioPhoneNumber: "Twilio Phone Number",
+                        
+                        // Sync
+                        syncStatus: "Synced"
+                    }
+                };
+                this.loadLanguage();
+            }
+
+            loadLanguage() {
+                const config = window.dbManager.getConfig();
+                this.currentLanguage = config.language || 'es';
+                this.applyTranslations();
+            }
+
+            changeLanguage(lang) {
+                this.currentLanguage = lang;
+                window.dbManager.updateConfig('language', lang);
+                this.applyTranslations();
+            }
+
+            translate(key) {
+                return this.translations[this.currentLanguage][key] || key;
+            }
+
+            applyTranslations() {
+                const elements = document.querySelectorAll('[data-i18n]');
+                elements.forEach(element => {
+                    const key = element.getAttribute('data-i18n');
+                    element.textContent = this.translate(key);
+                });
+
+                const placeholders = document.querySelectorAll('[data-i18n-placeholder]');
+                placeholders.forEach(element => {
+                    const key = element.getAttribute('data-i18n-placeholder');
+                    element.placeholder = this.translate(key);
+                });
+            }
+        }
+
+        // =============================================
+        // SISTEMA DE GESTIÓN DE SERVICIOS
+        // =============================================
+        class ServiceManager {
+            constructor() {
+                this.services = [];
+                this.categories = {
+                    appliance: { name: "Reparación de Electrodomésticos", icon: "fas fa-tools" },
+                    handyman: { name: "Servicios de Handyman", icon: "fas fa-hammer" },
+                    plumbing: { name: "Trabajos de Fontanería", icon: "fas fa-faucet" },
+                    painting: { name: "Pintura", icon: "fas fa-paint-roller" },
+                    flooring: { name: "Suelos", icon: "fas fa-border-all" },
+                    carpentry: { name: "Carpintería Ligera", icon: "fas fa-tree" }
+                };
+                this.loadServices();
+            }
+
+            loadServices() {
+                this.services = window.dbManager.getServices();
+                
+                if (window.authManager && window.authManager.isUser()) {
+                    this.renderServices();
+                }
+                
+                if (window.authManager && (window.authManager.isAdmin() || window.authManager.isEmployee())) {
+                    this.renderServicesTable();
+                }
+            }
+
+            getServicesByCategory(category) {
+                return this.services.filter(service => service.category === category);
+            }
+
+            renderServices() {
+                const grid = document.getElementById('servicesGrid');
+                if (!grid) return;
+                
+                grid.innerHTML = '';
+
+                Object.entries(this.categories).forEach(([categoryKey, category]) => {
+                    const categoryServices = this.getServicesByCategory(categoryKey);
+                    
+                    if (categoryServices.length > 0) {
+                        const categorySection = document.createElement('div');
+                        categorySection.style.gridColumn = '1 / -1';
+                        categorySection.style.marginBottom = '30px';
+                        
+                        const categoryTitle = document.createElement('h3');
+                        categoryTitle.style.marginBottom = '15px';
+                        categoryTitle.style.color = 'var(--dark)';
+                        categoryTitle.style.display = 'flex';
+                        categoryTitle.style.alignItems = 'center';
+                        categoryTitle.style.gap = '10px';
+                        categoryTitle.innerHTML = `<i class="${category.icon}"></i> ${category.name}`;
+                        categorySection.appendChild(categoryTitle);
+                        
+                        const servicesContainer = document.createElement('div');
+                        servicesContainer.style.display = 'grid';
+                        servicesContainer.style.gridTemplateColumns = 'repeat(auto-fit, minmax(280px, 1fr))';
+                        servicesContainer.style.gap = '20px';
+                        
+                        categoryServices.forEach(service => {
+                            const serviceCard = this.createServiceCard(service);
+                            servicesContainer.appendChild(serviceCard);
+                        });
+                        
+                        categorySection.appendChild(servicesContainer);
+                        grid.appendChild(categorySection);
+                    }
+                });
+            }
+
+            createServiceCard(service) {
+                const card = document.createElement('div');
+                card.className = 'service-card';
+                card.onclick = () => startBooking(service.id);
+                card.innerHTML = `
+                    <div class="service-icon">
+                        <i class="${service.icon}"></i>
+                    </div>
+                    <div class="service-info">
+                        <div class="service-title">${service.name}</div>
+                        <div class="service-description">${service.description}</div>
+                        <ul class="service-features">
+                            ${service.features.map(feature => `<li><i class="fas fa-check"></i> ${feature}</li>`).join('')}
+                        </ul>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                            <div style="font-weight: bold; color: var(--primary);">$${service.price.toFixed(2)}</div>
+                            <button class="book-btn">
+                                <i class="fas fa-calendar-plus"></i> Reservar
+                            </button>
+                        </div>
+                    </div>
+                `;
+                return card;
+            }
+
+            renderServicesTable() {
+                if (!window.authManager.isEmployee()) return;
+                
+                const table = document.getElementById('servicesTable');
+                if (!table) return;
+                
+                table.innerHTML = '';
+
+                this.services.forEach(service => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${service.name}</td>
+                        <td>${this.categories[service.category].name}</td>
+                        <td>$${service.price.toFixed(2)}</td>
+                        <td>${service.duration} min</td>
+                        <td class="action-buttons">
+                            <button class="action-btn edit" onclick="editService(${service.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn delete" onclick="deleteService(${service.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    table.appendChild(row);
+                });
+            }
+
+            renderBookingServices() {
+                const grid = document.getElementById('bookingServicesGrid');
+                if (!grid) return;
+                
+                grid.innerHTML = '';
+
+                this.services.forEach(service => {
+                    const card = document.createElement('div');
+                    card.className = 'service-card';
+                    card.onclick = () => selectService(service.id);
+                    card.innerHTML = `
+                        <div class="service-icon">
+                            <i class="${service.icon}"></i>
+                        </div>
+                        <div class="service-info">
+                            <div class="service-title">${service.name}</div>
+                            <div class="service-description">${service.description}</div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                                <div style="font-weight: bold; color: var(--primary);">$${service.price.toFixed(2)}</div>
+                                <span style="font-size: 0.9rem; color: var(--text-light);">${service.duration} min</span>
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            }
+
+            getServiceById(id) {
+                return this.services.find(service => service.id === id);
+            }
+
+            addService(service) {
+                if (!window.authManager.isAdmin()) return;
+                
+                const success = window.dbManager.createService(service);
+                if (success) {
+                    this.loadServices();
+                    this.renderServicesTable();
+                    return true;
+                }
+                return false;
+            }
+
+            updateService(id, updates) {
+                if (!window.authManager.isAdmin()) return;
+                
+                const success = window.dbManager.updateService(id, updates);
+                if (success) {
+                    this.loadServices();
+                    this.renderServicesTable();
+                    return true;
+                }
+                return false;
+            }
+
+            deleteService(id) {
+                if (!window.authManager.isAdmin()) return;
+                
+                if (confirm(window.i18nManager.translate('confirmDelete'))) {
+                    const success = window.dbManager.deleteService(id);
+                    if (success) {
+                        this.loadServices();
+                        this.renderServicesTable();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+
+        // =============================================
+        // SISTEMA DE DASHBOARD Y CALENDARIO
+        // =============================================
+        class DashboardManager {
+            constructor() {
+                this.currentDate = new Date();
+                this.currentMonth = this.currentDate.getMonth();
+                this.currentYear = this.currentDate.getFullYear();
+                this.bookings = [];
+                this.loadBookings();
+            }
+
+            loadBookings() {
+                this.bookings = window.dbManager.getBookings();
+                this.updateStats();
+                this.renderCalendar();
+                this.renderBookingsTable();
+                this.renderCustomersTable();
+            }
+
+            updateStats() {
+                document.getElementById('totalBookings').textContent = this.bookings.length;
+                document.getElementById('confirmedBookings').textContent = this.bookings.filter(b => b.status === 'confirmed').length;
+                document.getElementById('pendingBookings').textContent = this.bookings.filter(b => b.status === 'pending').length;
+                document.getElementById('cancelledBookings').textContent = this.bookings.filter(b => b.status === 'cancelled').length;
+            }
+
+            renderCalendar() {
+                const calendarGrid = document.getElementById('calendarGrid');
+                const currentMonthElement = document.getElementById('currentMonth');
+                
+                if (!calendarGrid) return;
+                
+                // Actualizar el mes actual
+                const monthNames = [
+                    "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+                ];
+                
+                if (window.i18nManager.currentLanguage === 'en') {
+                    const monthNamesEn = [
+                        "January", "February", "March", "April", "May", "June",
+                        "July", "August", "September", "October", "November", "December"
+                    ];
+                    currentMonthElement.textContent = `${monthNamesEn[this.currentMonth]} ${this.currentYear}`;
+                } else {
+                    currentMonthElement.textContent = `${monthNames[this.currentMonth]} ${this.currentYear}`;
+                }
+                
+                // Limpiar el calendario
+                calendarGrid.innerHTML = '';
+                
+                // Agregar encabezados de días
+                const dayNames = window.i18nManager.currentLanguage === 'en' ? 
+                    ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] :
+                    ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+                
+                dayNames.forEach(day => {
+                    const dayHeader = document.createElement('div');
+                    dayHeader.className = 'calendar-day-header';
+                    dayHeader.textContent = day;
+                    calendarGrid.appendChild(dayHeader);
+                });
+                
+                // Obtener el primer día del mes y el número de días
+                const firstDay = new Date(this.currentYear, this.currentMonth, 1).getDay();
+                const daysInMonth = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
+                
+                // Agregar días vacíos para alinear el primer día
+                for (let i = 0; i < firstDay; i++) {
+                    const emptyDay = document.createElement('div');
+                    emptyDay.className = 'calendar-day other-month';
+                    calendarGrid.appendChild(emptyDay);
+                }
+                
+                // Agregar los días del mes
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dayElement = document.createElement('div');
+                    dayElement.className = 'calendar-day';
+                    
+                    // Verificar si es hoy
+                    const today = new Date();
+                    if (day === today.getDate() && this.currentMonth === today.getMonth() && this.currentYear === today.getFullYear()) {
+                        dayElement.classList.add('today');
+                    }
+                    
+                    dayElement.innerHTML = `<div class="calendar-day-header">${day}</div>`;
+                    
+                    // Agregar eventos para este día
+                    const dayBookings = this.bookings.filter(booking => {
+                        const bookingDate = new Date(booking.date);
+                        return bookingDate.getDate() === day && 
+                               bookingDate.getMonth() === this.currentMonth && 
+                               bookingDate.getFullYear() === this.currentYear;
+                    });
+                    
+                    dayBookings.forEach(booking => {
+                        const eventElement = document.createElement('div');
+                        eventElement.className = 'calendar-event';
+                        eventElement.textContent = `${booking.customer_name} - ${window.serviceManager.getServiceById(booking.service_id).name}`;
+                        eventElement.onclick = () => viewBookingDetails(booking.id);
+                        dayElement.appendChild(eventElement);
+                    });
+                    
+                    calendarGrid.appendChild(dayElement);
+                }
+            }
+
+            changeMonth(direction) {
+                this.currentMonth += direction;
+                
+                if (this.currentMonth > 11) {
+                    this.currentMonth = 0;
+                    this.currentYear++;
+                } else if (this.currentMonth < 0) {
+                    this.currentMonth = 11;
+                    this.currentYear--;
+                }
+                
+                this.renderCalendar();
+            }
+
+            renderBookingsTable() {
+                const table = document.getElementById('bookingsTable');
+                if (!table) return;
+                
+                table.innerHTML = '';
+                
+                // Ordenar reservas por fecha (más recientes primero)
+                const sortedBookings = [...this.bookings].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                
+                sortedBookings.forEach(booking => {
+                    const service = window.serviceManager.getServiceById(booking.service_id);
+                    const row = document.createElement('tr');
+                    
+                    let statusClass = '';
+                    let statusText = '';
+                    
+                    switch(booking.status) {
+                        case 'pending':
+                            statusClass = 'status-pending';
+                            statusText = window.i18nManager.translate('statusPending');
+                            break;
+                        case 'confirmed':
+                            statusClass = 'status-confirmed';
+                            statusText = window.i18nManager.translate('statusConfirmed');
+                            break;
+                        case 'completed':
+                            statusClass = 'status-completed';
+                            statusText = window.i18nManager.translate('statusCompleted');
+                            break;
+                        case 'cancelled':
+                            statusClass = 'status-cancelled';
+                            statusText = window.i18nManager.translate('statusCancelled');
+                            break;
+                    }
+                    
+                    row.innerHTML = `
+                        <td>#${booking.id}</td>
+                        <td>${booking.customer_name}</td>
+                        <td>${service ? service.name : 'N/A'}</td>
+                        <td>${new Date(booking.date).toLocaleDateString()}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td class="action-buttons">
+                            <button class="action-btn edit" onclick="editBooking(${booking.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn delete" onclick="deleteBooking(${booking.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    table.appendChild(row);
+                });
+            }
+
+            renderCustomersTable() {
+                const table = document.getElementById('customersTable');
+                if (!table) return;
+                
+                const customers = window.dbManager.getCustomers();
+                table.innerHTML = '';
+                
+                customers.forEach(customer => {
+                    const customerBookings = this.bookings.filter(b => b.customer_email === customer.email);
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${customer.name}</td>
+                        <td>${customer.email}</td>
+                        <td>${customer.phone || 'N/A'}</td>
+                        <td>${customerBookings.length}</td>
+                        <td class="action-buttons">
+                            <button class="action-btn edit" onclick="viewCustomer(${customer.id})">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="action-btn delete" onclick="contactCustomer(${customer.id})">
+                                <i class="fas fa-phone"></i>
+                            </button>
+                        </td>
+                    `;
+                    table.appendChild(row);
+                });
+            }
+
+            loadDashboard() {
+                this.loadBookings();
+                this.updateStats();
+            }
+        }
+
+        // =============================================
+        // SISTEMA DE RESERVAS
+        // =============================================
+        class BookingManager {
+            constructor() {
+                this.currentStep = 1;
+                this.selectedService = null;
+                this.bookingData = {};
+            }
+
+            startBooking(serviceId) {
+                this.selectedService = window.serviceManager.getServiceById(serviceId);
+                this.bookingData.service_id = serviceId;
+                this.showBookingModal();
+                this.updateStep(1);
+            }
+
+            showBookingModal() {
+                document.getElementById('bookingModal').classList.add('active');
+                window.serviceManager.renderBookingServices();
+                
+                // Establecer fecha mínima como hoy
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('preferredDate').min = today;
+            }
+
+            closeBookingModal() {
+                document.getElementById('bookingModal').classList.remove('active');
+                this.resetBooking();
+            }
+
+            resetBooking() {
+                this.currentStep = 1;
+                this.selectedService = null;
+                this.bookingData = {};
+                this.updateStep(1);
+            }
+
+            updateStep(step) {
+                // Ocultar todos los pasos
+                document.querySelectorAll('.booking-step').forEach(step => {
+                    step.classList.remove('active');
+                });
+                
+                // Mostrar el paso actual
+                document.getElementById(`step${step}`).classList.add('active');
+                
+                // Actualizar botones de navegación
+                document.getElementById('prevBtn').style.display = step > 1 ? 'inline-block' : 'none';
+                
+                if (step === 5) {
+                    document.getElementById('nextBtn').innerHTML = `<i class="fas fa-check"></i> ${window.i18nManager.translate('confirm')}`;
+                    document.getElementById('nextBtn').onclick = () => this.confirmBooking();
+                    this.updateSummary();
+                } else {
+                    document.getElementById('nextBtn').innerHTML = `${window.i18nManager.translate('next')} <i class="fas fa-arrow-right"></i>`;
+                    document.getElementById('nextBtn').onclick = () => this.nextStep();
+                }
+                
+                this.currentStep = step;
+            }
+
+            nextStep() {
+                if (this.validateStep(this.currentStep)) {
+                    this.updateStep(this.currentStep + 1);
+                }
+            }
+
+            prevStep() {
+                this.updateStep(this.currentStep - 1);
+            }
+
+            validateStep(step) {
+                switch(step) {
+                    case 1:
+                        if (!this.selectedService) {
+                            alert(window.i18nManager.translate('selectServiceFirst'));
+                            return false;
+                        }
+                        document.getElementById('selectedServiceName').textContent = this.selectedService.name;
+                        break;
+                    case 2:
+                        const problemDescription = document.getElementById('problemDescription').value;
+                        if (!problemDescription.trim()) {
+                            alert(window.i18nManager.translate('describeProblem'));
+                            return false;
+                        }
+                        this.bookingData.problem_description = problemDescription;
+                        break;
+                    case 3:
+                        const date = document.getElementById('preferredDate').value;
+                        const time = document.getElementById('preferredTime').value;
+                        
+                        if (!date) {
+                            alert(window.i18nManager.translate('selectDate'));
+                            return false;
+                        }
+                        
+                        this.bookingData.date = `${date}T${time}:00`;
+                        break;
+                    case 4:
+                        const name = document.getElementById('customerName').value;
+                        const email = document.getElementById('customerEmail').value;
+                        const phone = document.getElementById('customerPhone').value;
+                        const address = document.getElementById('customerAddress').value;
+                        
+                        if (!name || !email || !phone || !address) {
+                            alert(window.i18nManager.translate('fillAllFields'));
+                            return false;
+                        }
+                        
+                        this.bookingData.customer_name = name;
+                        this.bookingData.customer_email = email;
+                        this.bookingData.customer_phone = phone;
+                        this.bookingData.customer_address = address;
+                        break;
+                }
+                return true;
+            }
+
+            updateSummary() {
+                document.getElementById('summaryService').textContent = this.selectedService.name;
+                document.getElementById('summaryDate').textContent = new Date(this.bookingData.date).toLocaleDateString();
+                document.getElementById('summaryTime').textContent = new Date(this.bookingData.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                document.getElementById('summaryCustomer').textContent = this.bookingData.customer_name;
+                document.getElementById('summaryAddress').textContent = this.bookingData.customer_address;
+            }
+
+            confirmBooking() {
+                if (!document.getElementById('termsAgreement').checked) {
+                    alert(window.i18nManager.translate('agreeTermsFirst'));
+                    return;
+                }
+                
+                const success = window.dbManager.createBooking(this.bookingData);
+                
+                if (success) {
+                    alert(window.i18nManager.translate('bookingConfirmed'));
+                    this.closeBookingModal();
+                    
+                    if (window.dashboardManager) {
+                        window.dashboardManager.loadDashboard();
+                    }
+                } else {
+                    alert(window.i18nManager.translate('bookingError'));
+                }
+            }
+        }
+
+        // =============================================
+        // SISTEMA DE CONFIGURACIÓN
+        // =============================================
+        class ConfigManager {
+            constructor() {
+                this.config = this.getDefaultConfig();
+                this.loadConfiguration();
+            }
+
+            getDefaultConfig() {
+                return {
+                    colors: {
+                        primary: '#2563eb',
+                        secondary: '#10b981'
+                    },
+                    branding: {
+                        companyName: 'ServicePro',
+                        logoIcon: 'fas fa-tools'
+                    },
+                    voip: {
+                        twilioSid: '',
+                        twilioToken: '',
+                        twilioPhone: ''
+                    }
+                };
+            }
+
+            loadConfiguration() {
+                const dbConfig = window.dbManager.getConfig();
+                
+                if (dbConfig.company_name) {
+                    this.config.branding.companyName = dbConfig.company_name;
+                    this.config.colors.primary = dbConfig.primary_color;
+                    this.config.colors.secondary = dbConfig.secondary_color;
+                    this.config.voip.twilioSid = dbConfig.voip_twilio_sid;
+                    this.config.voip.twilioToken = dbConfig.voip_twilio_token;
+                    this.config.voip.twilioPhone = dbConfig.voip_twilio_phone;
+                }
+                
+                this.applyConfiguration();
+            }
+
+            saveConfiguration() {
+                if (!window.authManager.isAdmin()) {
+                    alert('❌ Solo los administradores pueden guardar la configuración');
+                    return;
+                }
+                
+                try {
+                    this.updateConfigFromUI();
+                    
+                    const configToSave = {
+                        'company_name': this.config.branding.companyName,
+                        'primary_color': this.config.colors.primary,
+                        'secondary_color': this.config.colors.secondary,
+                        'voip_twilio_sid': this.config.voip.twilioSid,
+                        'voip_twilio_token': this.config.voip.twilioToken,
+                        'voip_twilio_phone': this.config.voip.twilioPhone
+                    };
+                    
+                    Object.entries(configToSave).forEach(([key, value]) => {
+                        window.dbManager.updateConfig(key, value);
+                    });
+                    
+                    this.applyConfiguration();
+                    alert('✅ Configuración guardada exitosamente!');
+                } catch (error) {
+                    console.error('Error al guardar configuración:', error);
+                    alert('❌ Error al guardar la configuración: ' + error.message);
+                }
+            }
+
+            updateConfigFromUI() {
+                this.config.branding.companyName = document.getElementById('companyName').value;
+                this.config.colors.primary = document.getElementById('primaryColor').value;
+                this.config.colors.secondary = document.getElementById('secondaryColor').value;
+                this.config.voip.twilioSid = document.getElementById('twilioSID').value;
+                this.config.voip.twilioToken = document.getElementById('twilioToken').value;
+                this.config.voip.twilioPhone = document.getElementById('twilioPhone').value;
+            }
+
+            applyConfiguration() {
+                const root = document.documentElement;
+                root.style.setProperty('--primary', this.config.colors.primary);
+                root.style.setProperty('--primary-dark', this.darkenColor(this.config.colors.primary, 20));
+                root.style.setProperty('--primary-light', this.lightenColor(this.config.colors.primary, 20));
+                root.style.setProperty('--secondary', this.config.colors.secondary);
+                root.style.setProperty('--secondary-dark', this.darkenColor(this.config.colors.secondary, 20));
+
+                document.getElementById('appNameDisplay').textContent = this.config.branding.companyName;
+                document.getElementById('logoIcon').innerHTML = `<i class="${this.config.branding.logoIcon}"></i>`;
+                
+                this.updateConfigUI();
+            }
+
+            updateConfigUI() {
+                if (!window.authManager.isAdmin()) return;
+                
+                document.getElementById('companyName').value = this.config.branding.companyName;
+                document.getElementById('primaryColor').value = this.config.colors.primary;
+                document.getElementById('secondaryColor').value = this.config.colors.secondary;
+                document.getElementById('twilioSID').value = this.config.voip.twilioSid;
+                document.getElementById('twilioToken').value = this.config.voip.twilioToken;
+                document.getElementById('twilioPhone').value = this.config.voip.twilioPhone;
+            }
+
+            darkenColor(color, percent) {
+                const num = parseInt(color.replace("#", ""), 16);
+                const amt = Math.round(2.55 * percent);
+                const R = (num >> 16) - amt;
+                const G = (num >> 8 & 0x00FF) - amt;
+                const B = (num & 0x0000FF) - amt;
+                return "#" + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
+                    (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
+                    (B < 255 ? B < 1 ? 0 : B : 255)).toString(16).slice(1);
+            }
+
+            lightenColor(color, percent) {
+                const num = parseInt(color.replace("#", ""), 16);
+                const amt = Math.round(2.55 * percent);
+                const R = (num >> 16) + amt;
+                const G = (num >> 8 & 0x00FF) + amt;
+                const B = (num & 0x0000FF) + amt;
+                return "#" + (0x1000000 + (R > 255 ? 255 : R) * 0x10000 +
+                    (G > 255 ? 255 : G) * 0x100 +
+                    (B > 255 ? 255 : B)).toString(16).slice(1);
+            }
+        }
+
+        // =============================================
+        // FUNCIONES GLOBALES
+        // =============================================
+        let selectedRole = 'user';
+
+        function selectRole(role) {
+            selectedRole = role;
+            document.querySelectorAll('.role-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.role === role);
+            });
+        }
+
+        function login() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!email || !password) {
+                alert(window.i18nManager.translate('fillAllFields'));
+                return;
+            }
+
+            window.authManager.login(email, password, selectedRole);
+        }
+
+        function showRegister() {
+            document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('registerModal').style.display = 'flex';
+        }
+
+        function showLogin() {
+            document.getElementById('registerModal').style.display = 'none';
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+
+        function register() {
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+            
+            if (!name || !email || !password || !confirmPassword) {
+                alert(window.i18nManager.translate('fillAllFields'));
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alert(window.i18nManager.translate('passwordsDontMatch'));
+                return;
+            }
+
+            if (window.authManager.register(name, email, password)) {
+                showLogin();
+            }
+        }
+
+        function logout() {
+            window.authManager.logout();
+        }
+
+        function toggleAdminPanel() {
+            if (!window.authManager.isEmployee()) {
+                alert('❌ Solo empleados y administradores pueden acceder al panel de administración');
+                return;
+            }
+            
+            document.getElementById('adminPanel').classList.toggle('active');
+        }
+
+        function toggleVoip() {
+            document.getElementById('voipPanel').classList.toggle('active');
+        }
+
+        function toggleLanguageDropdown() {
+            document.getElementById('languageDropdown').classList.toggle('active');
+        }
+
+        function changeLanguage(lang) {
+            window.i18nManager.changeLanguage(lang);
+            document.getElementById('currentLanguage').textContent = lang.toUpperCase();
+            document.getElementById('languageDropdown').classList.remove('active');
+            
+            if (window.dashboardManager) {
+                window.dashboardManager.renderCalendar();
+            }
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            window.dbManager.updateConfig('theme', newTheme);
+            
+            const themeIcon = document.getElementById('themeToggle').querySelector('i');
+            themeIcon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        }
+
+        function scrollToServices() {
+            document.getElementById('servicesSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showBookingModal() {
+            window.bookingManager.showBookingModal();
+        }
+
+        function closeBookingModal() {
+            window.bookingManager.closeBookingModal();
+        }
+
+        function startBooking(serviceId) {
+            window.bookingManager.startBooking(serviceId);
+        }
+
+        function selectService(serviceId) {
+            window.bookingManager.selectedService = window.serviceManager.getServiceById(serviceId);
+            window.bookingManager.bookingData.service_id = serviceId;
+            document.getElementById('selectedServiceName').textContent = window.bookingManager.selectedService.name;
+            window.bookingManager.nextStep();
+        }
+
+        function nextStep() {
+            window.bookingManager.nextStep();
+        }
+
+        function prevStep() {
+            window.bookingManager.prevStep();
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            document.querySelector(`.tab-btn[onclick="switchTab('${tabName}')"]`).classList.add('active');
+            document.getElementById(`${tabName}Tab`).classList.add('active');
+        }
+
+        function changeMonth(direction) {
+            window.dashboardManager.changeMonth(direction);
+        }
+
+        function startCall(contactName) {
+            document.getElementById('callControls').style.display = 'flex';
+            alert(`Llamando a ${contactName}...`);
+            // Aquí se integraría con Twilio o otro servicio VOIP
+        }
+
+        function endCall() {
+            document.getElementById('callControls').style.display = 'none';
+            alert('Llamada finalizada');
+        }
+
+        function saveSystemConfig() {
+            window.configManager.saveConfiguration();
+        }
+
+        function saveVoipConfig() {
+            window.configManager.saveConfiguration();
+        }
+
+        function showServiceEditor() {
+            alert('Funcionalidad de editor de servicios - Por implementar');
+        }
+
+        function editService(serviceId) {
+            alert(`Editando servicio ${serviceId} - Por implementar`);
+        }
+
+        function deleteService(serviceId) {
+            window.serviceManager.deleteService(serviceId);
+        }
+
+        function viewBookingDetails(bookingId) {
+            alert(`Viendo detalles de reserva ${bookingId} - Por implementar`);
+        }
+
+        function editBooking(bookingId) {
+            alert(`Editando reserva ${bookingId} - Por implementar`);
+        }
+
+        function deleteBooking(bookingId) {
+            if (confirm('¿Estás seguro de que quieres eliminar esta reserva?')) {
+                // Implementar eliminación de reserva
+                alert(`Reserva ${bookingId} eliminada - Por implementar`);
+            }
+        }
+
+        function viewCustomer(customerId) {
+            alert(`Viendo cliente ${customerId} - Por implementar`);
+        }
+
+        function contactCustomer(customerId) {
+            alert(`Contactando cliente ${customerId} - Por implementar`);
+        }
+
+        function showUserEditor() {
+            alert('Funcionalidad de editor de usuarios - Por implementar');
+        }
+
+        // =============================================
+        // INICIALIZACIÓN
+        // =============================================
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Inicializar base de datos
+            window.dbManager = new JSONDatabase();
+            
+            // Esperar un momento a que la base de datos se inicialice
+            setTimeout(() => {
+                // Crear instancias globales
+                window.i18nManager = new I18nManager();
+                window.authManager = new AuthManager();
+                window.configManager = new ConfigManager();
+                window.serviceManager = new ServiceManager();
+                window.dashboardManager = new DashboardManager();
+                window.bookingManager = new BookingManager();
+                
+                // Aplicar tema guardado
+                const config = window.dbManager.getConfig();
+                if (config.theme === 'dark') {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    document.getElementById('themeToggle').querySelector('i').className = 'fas fa-sun';
+                }
+                
+                // Aplicar idioma
+                window.i18nManager.applyTranslations();
+                document.getElementById('currentLanguage').textContent = window.i18nManager.currentLanguage.toUpperCase();
+            }, 100);
+        });
+    </script>
+</body>
+</html>
