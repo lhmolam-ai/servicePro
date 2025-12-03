@@ -1,7 +1,1708 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"><!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <meta charset="UTF-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ 
+ <!-- SEO Meta Tags -->
+ <title>ServicePro | Premium Home Service Booking Platform</title>
+ <meta name="description"
+  content="Book home service professionals with ServicePro. Appliance repair, handyman services, plumbing, painting, flooring and more. Premium service experience." />
+ <meta name="keywords" content="premium home services, repairs, appliance repair, professional handyman, plumbing services, painting contractors" />
+ <meta name="author" content="ServicePro" />
+ <meta name="theme-color" content="#7C3AED" />
+
+ <!-- Open Graph / Facebook -->
+ <meta property="og:type" content="website" />
+ <meta property="og:url" content="https://servicepro.com/" />
+ <meta property="og:title" content="ServicePro | Premium Home Service Booking Platform" />
+ <meta property="og:description"
+  content="Book professionals for home repairs and maintenance. Premium service experience guaranteed." />
+ <meta property="og:image" content="https://servicepro.com/og-image.jpg" />
+
+ <!-- Twitter -->
+ <meta property="twitter:card" content="summary_large_image" />
+ <meta property="twitter:url" content="https://servicepro.com/" />
+ <meta property="twitter:title" content="ServicePro | Premium Home Service Booking Platform" />
+ <meta property="twitter:description"
+  content="Book professionals for home repairs and maintenance. Premium service experience guaranteed." />
+ <meta property="twitter:image" content="https://servicepro.com/og-image.jpg" />
+
+ <!-- Google Fonts -->
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link
+  href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap"
+  rel="stylesheet">
+ 
+ <!-- Font Awesome Icons -->
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+ 
+ <style>
+  :root {
+   --violet: #8B5CF6;
+   --dark-violet: #7C3AED;
+   --purple: #A855F7;
+   --deep-purple: #6D28D9;
+   --navy-blue: #1E1B4B;
+   --dark-bg: #0F0F23;
+   --charcoal: #2A2A3E;
+   --light-gray: #E2E8F0;
+   --lavender: #C4B5FD;
+   --white: #FFFFFF;
+   --gradient-primary: linear-gradient(135deg, var(--violet) 0%, var(--purple) 50%, var(--deep-purple) 100%);
+   --gradient-secondary: linear-gradient(135deg, var(--navy-blue) 0%, var(--dark-bg) 100%);
+   --gradient-blob: linear-gradient(135deg, var(--violet) 0%, var(--purple) 30%, var(--navy-blue) 70%);
+   --spacing-xs: .5rem;
+   --spacing-sm: 1rem;
+   --spacing-md: 1.5rem;
+   --spacing-lg: 2rem;
+   --spacing-xl: 3rem;
+   --spacing-2xl: 4rem;
+   --radius-sm: 8px;
+   --radius-md: 16px;
+   --radius-lg: 24px;
+   --radius-full: 9999px;
+   --shadow-sm: 0 2px 8px rgba(139, 92, 246, 0.1);
+   --shadow-md: 0 4px 16px rgba(139, 92, 246, 0.2);
+   --shadow-lg: 0 8px 32px rgba(139, 92, 246, 0.3);
+   --shadow-glow: 0 4px 24px rgba(139, 92, 246, 0.5);
+   --transition-fast: .2s ease;
+   --transition-normal: .3s ease;
+   --transition-slow: .5s ease;
+  }
+  
+  * {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+  }
+  
+  body {
+   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+   background: var(--dark-bg);
+   color: var(--white);
+   line-height: 1.6;
+   overflow-x: hidden;
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+   font-family: 'Outfit', sans-serif;
+   font-weight: 700;
+   line-height: 1.2;
+   margin-bottom: var(--spacing-md);
+  }
+  
+  h1 {
+   font-size: clamp(2.5rem, 5vw, 4rem);
+   background: var(--gradient-primary);
+   -webkit-background-clip: text;
+   -webkit-text-fill-color: transparent;
+   background-clip: text;
+  }
+  
+  h2 {
+   font-size: clamp(2rem, 4vw, 3rem);
+   color: var(--lavender);
+  }
+  
+  h3 {
+   font-size: clamp(1.5rem, 3vw, 2rem);
+   color: var(--light-gray);
+  }
+  
+  p {
+   font-size: clamp(1rem, 2vw, 1.125rem);
+   color: var(--light-gray);
+   margin-bottom: var(--spacing-sm);
+  }
+  
+  /* Animations */
+  @keyframes fadeInUp {
+   0% {
+    opacity: 0;
+    transform: translateY(30px);
+   }
+   100% {
+    opacity: 1;
+    transform: translateY(0);
+   }
+  }
+  
+  @keyframes fadeIn {
+   0% {
+    opacity: 0;
+   }
+   100% {
+    opacity: 1;
+   }
+  }
+  
+  @keyframes float {
+   0%, 100% {
+    transform: translateY(0) translateX(0);
+   }
+   50% {
+    transform: translateY(-20px) translateX(10px);
+   }
+  }
+  
+  @keyframes blob-float {
+   0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+   }
+   33% {
+    transform: translate(30px, -50px) scale(1.1);
+   }
+   66% {
+    transform: translate(-20px, 20px) scale(0.9);
+   }
+  }
+  
+  @keyframes pulse-glow {
+   0%, 100% {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+   }
+   50% {
+    box-shadow: 0 0 40px rgba(139, 92, 246, 0.8);
+   }
+  }
+  
+  @keyframes gradient-shift {
+   0% {
+    background-position: 0% 50%;
+   }
+   50% {
+    background-position: 100% 50%;
+   }
+   100% {
+    background-position: 0% 50%;
+   }
+  }
+  
+  /* Blob Animations */
+  .blob {
+   position: absolute;
+   border-radius: 50%;
+   filter: blur(40px);
+   opacity: 0.7;
+   z-index: -1;
+   animation: blob-float 20s infinite ease-in-out;
+  }
+  
+  .blob-1 {
+   width: 500px;
+   height: 500px;
+   background: radial-gradient(circle, var(--violet) 0%, transparent 70%);
+   top: -200px;
+   left: -200px;
+   animation-delay: 0s;
+  }
+  
+  .blob-2 {
+   width: 400px;
+   height: 400px;
+   background: radial-gradient(circle, var(--purple) 0%, transparent 70%);
+   bottom: -100px;
+   right: -100px;
+   animation-delay: 5s;
+  }
+  
+  .blob-3 {
+   width: 300px;
+   height: 300px;
+   background: radial-gradient(circle, var(--navy-blue) 0%, transparent 70%);
+   top: 50%;
+   left: 80%;
+   animation-delay: 10s;
+  }
+  
+  /* Container and Utility Classes */
+  .container {
+   max-width: 1200px;
+   margin: 0 auto;
+   padding: 0 var(--spacing-md);
+   position: relative;
+   z-index: 1;
+  }
+  
+  .fade-in-up {
+   opacity: 0;
+   animation: fadeInUp 0.8s ease-out forwards;
+  }
+  
+  .fade-in {
+   opacity: 0;
+   animation: fadeIn 0.6s ease-out forwards;
+  }
+  
+  .glass {
+   background: rgba(42, 42, 62, 0.7);
+   backdrop-filter: blur(10px);
+   -webkit-backdrop-filter: blur(10px);
+   border: 1px solid rgba(139, 92, 246, 0.2);
+   border-radius: var(--radius-md);
+  }
+  
+  .btn {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   gap: var(--spacing-xs);
+   padding: var(--spacing-sm) var(--spacing-lg);
+   font-size: 1.125rem;
+   font-weight: 600;
+   border: none;
+   border-radius: var(--radius-full);
+   cursor: pointer;
+   transition: all var(--transition-normal);
+   text-decoration: none;
+   position: relative;
+   overflow: hidden;
+  }
+  
+  .btn-primary {
+   background: var(--gradient-primary);
+   color: var(--white);
+   box-shadow: var(--shadow-glow);
+   animation: pulse-glow 3s infinite;
+  }
+  
+  .btn-primary:hover {
+   transform: translateY(-3px);
+   box-shadow: 0 8px 32px rgba(139, 92, 246, 0.6);
+   animation: none;
+  }
+  
+  .btn-secondary {
+   background: transparent;
+   color: var(--lavender);
+   border: 2px solid var(--violet);
+  }
+  
+  .btn-secondary:hover {
+   background: rgba(139, 92, 246, 0.1);
+   transform: translateY(-3px);
+   border-color: var(--lavender);
+  }
+  
+  .card {
+   background: var(--charcoal);
+   border-radius: var(--radius-lg);
+   padding: var(--spacing-lg);
+   box-shadow: var(--shadow-md);
+   transition: all var(--transition-normal);
+   border: 1px solid rgba(139, 92, 246, 0.1);
+   position: relative;
+   overflow: hidden;
+  }
+  
+  .card:hover {
+   transform: translateY(-8px);
+   box-shadow: var(--shadow-lg);
+   border-color: rgba(139, 92, 246, 0.3);
+  }
+  
+  .card::before {
+   content: '';
+   position: absolute;
+   top: 0;
+   left: 0;
+   right: 0;
+   height: 4px;
+   background: var(--gradient-primary);
+   opacity: 0;
+   transition: opacity var(--transition-normal);
+  }
+  
+  .card:hover::before {
+   opacity: 1;
+  }
+  
+  .grid {
+   display: grid;
+   gap: var(--spacing-lg);
+  }
+  
+  .grid-2 {
+   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+  
+  .grid-3 {
+   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+  
+  /* Header Styles */
+  header {
+   background: rgba(15, 15, 35, 0.9);
+   backdrop-filter: blur(10px);
+   position: fixed;
+   top: 0;
+   left: 0;
+   right: 0;
+   z-index: 1000;
+   border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+  }
+  
+  .header-container {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   padding: var(--spacing-sm) 0;
+  }
+  
+  .logo {
+   display: flex;
+   align-items: center;
+   gap: var(--spacing-xs);
+   text-decoration: none;
+  }
+  
+  .logo-icon {
+   width: 40px;
+   height: 40px;
+   background: var(--gradient-primary);
+   border-radius: var(--radius-sm);
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   color: var(--white);
+   font-weight: 900;
+   animation: pulse-glow 2s infinite;
+  }
+  
+  .logo-text {
+   font-family: 'Outfit', sans-serif;
+   font-weight: 900;
+   font-size: 1.5rem;
+   background: var(--gradient-primary);
+   -webkit-background-clip: text;
+   -webkit-text-fill-color: transparent;
+   background-clip: text;
+  }
+  
+  nav ul {
+   display: flex;
+   list-style: none;
+   gap: var(--spacing-lg);
+  }
+  
+  nav a {
+   color: var(--light-gray);
+   text-decoration: none;
+   font-weight: 500;
+   transition: all var(--transition-fast);
+   position: relative;
+   padding: var(--spacing-xs) 0;
+  }
+  
+  nav a:hover {
+   color: var(--lavender);
+  }
+  
+  nav a:after {
+   content: '';
+   position: absolute;
+   bottom: 0;
+   left: 0;
+   width: 0;
+   height: 2px;
+   background: var(--gradient-primary);
+   transition: width var(--transition-normal);
+  }
+  
+  nav a:hover:after {
+   width: 100%;
+  }
+  
+  .mobile-menu-btn {
+   display: none;
+   background: none;
+   border: none;
+   color: var(--lavender);
+   font-size: 1.5rem;
+   cursor: pointer;
+  }
+  
+  /* Hero Section */
+  .hero {
+   min-height: 100vh;
+   display: flex;
+   align-items: center;
+   position: relative;
+   padding-top: 80px;
+   overflow: hidden;
+  }
+  
+  .hero-bg {
+   position: absolute;
+   inset: 0;
+   background: var(--gradient-secondary);
+   z-index: -2;
+  }
+  
+  .hero-content {
+   text-align: center;
+   padding: var(--spacing-2xl) 0;
+   position: relative;
+   z-index: 1;
+  }
+  
+  .hero-badge {
+   display: inline-flex;
+   align-items: center;
+   gap: var(--spacing-xs);
+   background: rgba(139, 92, 246, 0.15);
+   border: 1px solid rgba(139, 92, 246, 0.3);
+   padding: var(--spacing-xs) var(--spacing-md);
+   border-radius: var(--radius-full);
+   margin-bottom: var(--spacing-lg);
+   color: var(--lavender);
+   font-size: 0.875rem;
+   font-weight: 500;
+   animation: fadeInUp 0.6s ease-out forwards;
+  }
+  
+  .hero-subtitle {
+   font-size: clamp(1.25rem, 3vw, 1.75rem);
+   color: var(--light-gray);
+   max-width: 800px;
+   margin: 0 auto var(--spacing-xl);
+   font-weight: 300;
+   animation: fadeInUp 0.8s ease-out forwards;
+  }
+  
+  .hero-stats {
+   display: flex;
+   justify-content: center;
+   gap: var(--spacing-xl);
+   margin-top: var(--spacing-xl);
+   flex-wrap: wrap;
+  }
+  
+  .stat-item {
+   text-align: center;
+   animation: fadeInUp 1s ease-out forwards;
+  }
+  
+  .stat-item:nth-child(2) { animation-delay: 0.2s; }
+  .stat-item:nth-child(3) { animation-delay: 0.4s; }
+  
+  .stat-number {
+   font-size: 2.5rem;
+   font-weight: 900;
+   background: var(--gradient-primary);
+   -webkit-background-clip: text;
+   -webkit-text-fill-color: transparent;
+   background-clip: text;
+   line-height: 1;
+  }
+  
+  .stat-label {
+   color: var(--light-gray);
+   font-size: 0.875rem;
+   text-transform: uppercase;
+   letter-spacing: 0.1em;
+  }
+  
+  /* Gallery Section */
+  .gallery {
+   padding: var(--spacing-2xl) 0;
+   background: var(--dark-bg);
+  }
+  
+  .section-header {
+   text-align: center;
+   margin-bottom: var(--spacing-2xl);
+  }
+  
+  .section-header h2 {
+   margin-bottom: var(--spacing-sm);
+   position: relative;
+   display: inline-block;
+  }
+  
+  .section-header h2:after {
+   content: '';
+   position: absolute;
+   bottom: -10px;
+   left: 50%;
+   transform: translateX(-50%);
+   width: 60px;
+   height: 3px;
+   background: var(--gradient-primary);
+   border-radius: var(--radius-full);
+  }
+  
+  .gallery-grid {
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+   gap: var(--spacing-lg);
+  }
+  
+  .gallery-item {
+   border-radius: var(--radius-lg);
+   overflow: hidden;
+   position: relative;
+   height: 300px;
+   animation: fadeInUp 0.8s ease-out forwards;
+   opacity: 0;
+  }
+  
+  .gallery-item:nth-child(2) { animation-delay: 0.2s; }
+  .gallery-item:nth-child(3) { animation-delay: 0.4s; }
+  .gallery-item:nth-child(4) { animation-delay: 0.6s; }
+  
+  .gallery-img {
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+   transition: transform 0.6s ease;
+  }
+  
+  .gallery-item:hover .gallery-img {
+   transform: scale(1.1);
+  }
+  
+  .gallery-overlay {
+   position: absolute;
+   inset: 0;
+   background: linear-gradient(to top, rgba(15, 15, 35, 0.9) 0%, transparent 100%);
+   display: flex;
+   align-items: flex-end;
+   padding: var(--spacing-lg);
+   opacity: 0;
+   transition: opacity var(--transition-normal);
+  }
+  
+  .gallery-item:hover .gallery-overlay {
+   opacity: 1;
+  }
+  
+  .gallery-content h3 {
+   color: var(--lavender);
+   font-size: 1.25rem;
+   margin-bottom: var(--spacing-xs);
+  }
+  
+  /* Services Section */
+  .services {
+   padding: var(--spacing-2xl) 0;
+   background: var(--gradient-secondary);
+   position: relative;
+   overflow: hidden;
+  }
+  
+  .services-grid {
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+   gap: var(--spacing-lg);
+   margin-bottom: var(--spacing-xl);
+  }
+  
+  .service-card {
+   text-align: center;
+   padding: var(--spacing-xl);
+   position: relative;
+   overflow: hidden;
+   animation: fadeInUp 0.8s ease-out forwards;
+   opacity: 0;
+  }
+  
+  .service-card:nth-child(2) { animation-delay: 0.1s; }
+  .service-card:nth-child(3) { animation-delay: 0.2s; }
+  .service-card:nth-child(4) { animation-delay: 0.3s; }
+  .service-card:nth-child(5) { animation-delay: 0.4s; }
+  .service-card:nth-child(6) { animation-delay: 0.5s; }
+  
+  .service-icon {
+   width: 80px;
+   height: 80px;
+   margin: 0 auto var(--spacing-md);
+   background: rgba(139, 92, 246, 0.1);
+   border-radius: 50%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   color: var(--lavender);
+   font-size: 2rem;
+   transition: all var(--transition-normal);
+  }
+  
+  .service-card:hover .service-icon {
+   background: var(--gradient-primary);
+   color: var(--white);
+   transform: scale(1.1) rotate(5deg);
+  }
+  
+  .service-list {
+   list-style: none;
+   margin: var(--spacing-md) 0;
+   text-align: left;
+  }
+  
+  .service-list li {
+   padding: var(--spacing-xs) 0;
+   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+   color: var(--light-gray);
+   font-size: 0.9375rem;
+   display: flex;
+   align-items: center;
+   gap: var(--spacing-xs);
+  }
+  
+  .service-list li:last-child {
+   border-bottom: none;
+  }
+  
+  .service-list li i {
+   color: var(--lavender);
+   font-size: 0.75rem;
+  }
+  
+  /* Booking Section */
+  .booking {
+   padding: var(--spacing-2xl) 0;
+   background: var(--dark-bg);
+  }
+  
+  .booking-container {
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   gap: var(--spacing-2xl);
+   align-items: center;
+  }
+  
+  .booking-steps {
+   list-style: none;
+   margin-top: var(--spacing-lg);
+  }
+  
+  .booking-steps li {
+   display: flex;
+   align-items: flex-start;
+   gap: var(--spacing-md);
+   margin-bottom: var(--spacing-lg);
+   opacity: 0;
+   animation: fadeInUp 0.8s ease-out forwards;
+  }
+  
+  .booking-steps li:nth-child(2) { animation-delay: 0.2s; }
+  .booking-steps li:nth-child(3) { animation-delay: 0.4s; }
+  .booking-steps li:nth-child(4) { animation-delay: 0.6s; }
+  
+  .step-number {
+   width: 40px;
+   height: 40px;
+   background: var(--gradient-primary);
+   border-radius: 50%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   color: var(--white);
+   font-weight: 900;
+   flex-shrink: 0;
+   animation: pulse-glow 2s infinite;
+  }
+  
+  /* Booking Form */
+  .booking-form {
+   padding: var(--spacing-xl);
+   animation: fadeInUp 0.8s ease-out forwards;
+   opacity: 0;
+   animation-delay: 0.3s;
+  }
+  
+  .form-group {
+   margin-bottom: var(--spacing-md);
+  }
+  
+  .form-group label {
+   display: block;
+   margin-bottom: var(--spacing-xs);
+   color: var(--lavender);
+   font-weight: 500;
+  }
+  
+  .form-control {
+   width: 100%;
+   padding: var(--spacing-md);
+   background: rgba(255, 255, 255, 0.05);
+   border: 1px solid rgba(139, 92, 246, 0.2);
+   border-radius: var(--radius-sm);
+   color: var(--white);
+   font-family: 'Inter', sans-serif;
+   font-size: 1rem;
+   transition: all var(--transition-fast);
+  }
+  
+  .form-control:focus {
+   outline: none;
+   border-color: var(--violet);
+   box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+  }
+  
+  .form-row {
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   gap: var(--spacing-md);
+  }
+  
+  textarea.form-control {
+   min-height: 120px;
+   resize: vertical;
+  }
+  
+  .upload-area {
+   border: 2px dashed rgba(139, 92, 246, 0.3);
+   border-radius: var(--radius-sm);
+   padding: var(--spacing-xl);
+   text-align: center;
+   cursor: pointer;
+   transition: all var(--transition-normal);
+  }
+  
+  .upload-area:hover {
+   border-color: var(--violet);
+   background: rgba(139, 92, 246, 0.05);
+  }
+  
+  .upload-area i {
+   font-size: 2rem;
+   color: var(--lavender);
+   margin-bottom: var(--spacing-sm);
+  }
+  
+  .upload-text {
+   color: var(--light-gray);
+  }
+  
+  .upload-text span {
+   color: var(--lavender);
+   font-weight: 500;
+  }
+  
+  /* Features Section */
+  .features {
+   padding: var(--spacing-2xl) 0;
+   background: var(--gradient-secondary);
+   position: relative;
+   overflow: hidden;
+  }
+  
+  .features-grid {
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+   gap: var(--spacing-lg);
+  }
+  
+  .feature-card {
+   text-align: center;
+   padding: var(--spacing-xl);
+   animation: fadeInUp 0.8s ease-out forwards;
+   opacity: 0;
+  }
+  
+  .feature-card:nth-child(2) { animation-delay: 0.1s; }
+  .feature-card:nth-child(3) { animation-delay: 0.2s; }
+  .feature-card:nth-child(4) { animation-delay: 0.3s; }
+  
+  .feature-icon {
+   width: 70px;
+   height: 70px;
+   margin: 0 auto var(--spacing-md);
+   background: rgba(139, 92, 246, 0.1);
+   border-radius: 50%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   color: var(--lavender);
+   font-size: 1.5rem;
+   transition: all var(--transition-normal);
+  }
+  
+  .feature-card:hover .feature-icon {
+   transform: scale(1.1);
+   background: var(--gradient-primary);
+   color: var(--white);
+  }
+  
+  /* Footer */
+  footer {
+   background: var(--navy-blue);
+   padding: var(--spacing-2xl) 0 var(--spacing-xl);
+   border-top: 1px solid rgba(139, 92, 246, 0.2);
+  }
+  
+  .footer-container {
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+   gap: var(--spacing-xl);
+   margin-bottom: var(--spacing-xl);
+  }
+  
+  .footer-logo {
+   font-family: 'Outfit', sans-serif;
+   font-weight: 900;
+   font-size: 1.5rem;
+   background: var(--gradient-primary);
+   -webkit-background-clip: text;
+   -webkit-text-fill-color: transparent;
+   background-clip: text;
+   margin-bottom: var(--spacing-sm);
+  }
+  
+  .footer-about p {
+   color: var(--light-gray);
+   opacity: 0.8;
+  }
+  
+  .footer-links h4 {
+   color: var(--lavender);
+   font-size: 1.125rem;
+   margin-bottom: var(--spacing-md);
+  }
+  
+  .footer-links ul {
+   list-style: none;
+  }
+  
+  .footer-links li {
+   margin-bottom: var(--spacing-xs);
+  }
+  
+  .footer-links a {
+   color: var(--light-gray);
+   text-decoration: none;
+   transition: color var(--transition-fast);
+  }
+  
+  .footer-links a:hover {
+   color: var(--lavender);
+  }
+  
+  .footer-contact p {
+   color: var(--light-gray);
+   margin-bottom: var(--spacing-xs);
+   display: flex;
+   align-items: center;
+   gap: var(--spacing-xs);
+  }
+  
+  .footer-contact i {
+   color: var(--lavender);
+   width: 20px;
+  }
+  
+  .copyright {
+   text-align: center;
+   padding-top: var(--spacing-xl);
+   border-top: 1px solid rgba(255, 255, 255, 0.1);
+   color: var(--light-gray);
+   font-size: 0.875rem;
+   opacity: 0.6;
+  }
+  
+  /* Modal */
+  .modal {
+   display: none;
+   position: fixed;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   background: rgba(15, 15, 35, 0.95);
+   z-index: 2000;
+   justify-content: center;
+   align-items: center;
+   padding: var(--spacing-md);
+  }
+  
+  .modal-content {
+   background: var(--charcoal);
+   border-radius: var(--radius-lg);
+   padding: var(--spacing-2xl);
+   max-width: 500px;
+   width: 100%;
+   text-align: center;
+   position: relative;
+   border: 1px solid rgba(139, 92, 246, 0.3);
+   animation: fadeInUp 0.5s ease-out;
+  }
+  
+  .close-modal {
+   position: absolute;
+   top: var(--spacing-md);
+   right: var(--spacing-md);
+   background: none;
+   border: none;
+   color: var(--lavender);
+   font-size: 1.5rem;
+   cursor: pointer;
+  }
+  
+  .confirmation-icon {
+   width: 80px;
+   height: 80px;
+   background: var(--gradient-primary);
+   border-radius: 50%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   margin: 0 auto var(--spacing-lg);
+   color: var(--white);
+   font-size: 2rem;
+   animation: pulse-glow 2s infinite;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+   .header-container {
+    padding: var(--spacing-sm) 0;
+   }
+   
+   nav ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(15, 15, 35, 0.95);
+    padding: var(--spacing-md);
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    border-top: 1px solid rgba(139, 92, 246, 0.2);
+   }
+   
+   nav.active ul {
+    display: flex;
+   }
+   
+   .mobile-menu-btn {
+    display: block;
+   }
+   
+   .booking-container {
+    grid-template-columns: 1fr;
+   }
+   
+   .form-row {
+    grid-template-columns: 1fr;
+   }
+   
+   .hero-stats {
+    gap: var(--spacing-lg);
+   }
+   
+   .stat-number {
+    font-size: 2rem;
+   }
+   
+   .gallery-grid {
+    grid-template-columns: 1fr;
+   }
+   
+   .services-grid {
+    grid-template-columns: 1fr;
+   }
+  }
+  
+  @media (max-width: 480px) {
+   .hero {
+    padding-top: 60px;
+   }
+   
+   .booking-form {
+    padding: var(--spacing-lg);
+   }
+   
+   .gallery-item {
+    height: 250px;
+   }
+  }
+ </style>
+</head>
+
+<body>
+ <!-- Background Blobs -->
+ <div class="blob blob-1"></div>
+ <div class="blob blob-2"></div>
+ <div class="blob blob-3"></div>
+ 
+ <!-- Header -->
+ <header>
+  <div class="container header-container">
+   <a href="#" class="logo">
+    <div class="logo-icon">SP</div>
+    <div class="logo-text">ServicePro</div>
+   </a>
+   
+   <button class="mobile-menu-btn" id="mobileMenuBtn">
+    <i class="fas fa-bars"></i>
+   </button>
+   
+   <nav id="mainNav">
+    <ul>
+     <li><a href="#home">Home</a></li>
+     <li><a href="#gallery">Gallery</a></li>
+     <li><a href="#services">Services</a></li>
+     <li><a href="#booking">Book Now</a></li>
+     <li><a href="#features">Why Us</a></li>
+    </ul>
+   </nav>
+  </div>
+ </header>
+
+ <!-- Hero Section -->
+ <section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="container hero-content">
+   <div class="hero-badge">
+    <i class="fas fa-crown"></i>
+    <span>Premium Service Since 2015</span>
+   </div>
+   
+   <h1 class="fade-in-up"> Home Services</h1>
+   <p class="hero-subtitle fade-in-up">Experience premium home services with certified professionals. From appliance repair to complete renovations, we deliver excellence.</p>
+   
+   <div class="hero-buttons fade-in-up" style="margin-bottom: var(--spacing-xl);">
+    <a href="#booking" class="btn btn-primary">Book Premium Service</a>
+    <a href="#gallery" class="btn btn-secondary">View Our Work</a>
+   </div>
+   
+   <div class="hero-stats">
+    <div class="stat-item">
+     <div class="stat-number">5,000+</div>
+     <div class="stat-label"> Jobs Completed</div>
+    </div>
+    <div class="stat-item">
+     <div class="stat-number">99%</div>
+     <div class="stat-label">Client Satisfaction</div>
+    </div>
+    <div class="stat-item">
+     <div class="stat-number">24/7</div>
+     <div class="stat-label">Premium Support</div>
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <!-- Gallery Section -->
+ <section class="gallery" id="gallery">
+  <div class="container">
+   <div class="section-header">
+    <h2>Our Premium Work</h2>
+    <p>Experience the quality and precision of our professional services</p>
+   </div>
+   
+   <div class="gallery-grid">
+    <div class="card gallery-item">
+     <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Modern Kitchen Renovation" class="gallery-img">
+     <div class="gallery-overlay">
+      <div class="gallery-content">
+       <h3>Modern Kitchen</h3>
+       <p>Complete renovation and appliance installation</p>
+      </div>
+     </div>
+    </div>
+    
+    <div class="card gallery-item">
+     <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Bathroom Plumbing Work" class="gallery-img">
+     <div class="gallery-overlay">
+      <div class="gallery-content">
+       <h3>Bathroom Excellence</h3>
+       <p>Premium plumbing and fixture installation</p>
+      </div>
+     </div>
+    </div>
+    
+    <div class="card gallery-item">
+     <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Living Room Painting" class="gallery-img">
+     <div class="gallery-overlay">
+      <div class="gallery-content">
+       <h3>Interior Painting</h3>
+       <p>Premium paint job with attention to detail</p>
+      </div>
+     </div>
+    </div>
+    
+    <div class="card gallery-item">
+     <img src="https://images.unsplash.com/photo-1565538810643-b5bdb714032a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Flooring Installation" class="gallery-img">
+     <div class="gallery-overlay">
+      <div class="gallery-content">
+       <h3>Premium Flooring</h3>
+       <p>Expert installation of luxury vinyl flooring</p>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <!-- Services Section -->
+ <section class="services" id="services">
+  <div class="container">
+   <div class="section-header">
+    <h2>Premium Services</h2>
+    <p>Comprehensive range of home services delivered by certified professionals</p>
+   </div>
+   
+   <div class="services-grid">
+    <!-- Appliance Repair -->
+    <div class="card service-card">
+     <div class="service-icon">
+      <i class="fas fa-blender"></i>
+     </div>
+     <h3> Appliance Repair</h3>
+     <p>Premium diagnostics and repair for luxury home appliances</p>
+     <ul class="service-list">
+      <li><i class="fas fa-star"></i> Smart Appliance Repair</li>
+      <li><i class="fas fa-star"></i> Premium Washer/Dryer Service</li>
+      <li><i class="fas fa-star"></i> Luxury Refrigerator Repair</li>
+      <li><i class="fas fa-star"></i> High-End Appliance Installation</li>
+      <li><i class="fas fa-star"></i> Preventive Maintenance Plans</li>
+     </ul>
+     <a href="#booking" class="btn btn-primary" data-service=" Appliance Repair">Book This Service</a>
+    </div>
+    
+    <!-- Handyman Services -->
+    <div class="card service-card">
+     <div class="service-icon">
+      <i class="fas fa-hammer"></i>
+     </div>
+     <h3>Premium Handyman</h3>
+     <p>Expert home repairs and installations with premium materials</p>
+     <ul class="service-list">
+      <li><i class="fas fa-star"></i> Custom Door & Lock Installation</li>
+      <li><i class="fas fa-star"></i> Premium Drywall & Finishing</li>
+      <li><i class="fas fa-star"></i> Luxury Furniture Assembly</li>
+      <li><i class="fas fa-star"></i> Smart Home TV Mounting</li>
+      <li><i class="fas fa-star"></i> Custom Shelving Solutions</li>
+     </ul>
+     <a href="#booking" class="btn btn-primary" data-service="Premium Handyman">Book This Service</a>
+    </div>
+    
+    <!-- Plumbing -->
+    <div class="card service-card">
+     <div class="service-icon">
+      <i class="fas fa-faucet"></i>
+     </div>
+     <h3>Luxury Plumbing</h3>
+     <p>Premium plumbing solutions for modern luxury homes</p>
+     <ul class="service-list">
+      <li><i class="fas fa-star"></i> Smart Toilet Installation</li>
+      <li><i class="fas fa-star"></i> Designer Faucet Installation</li>
+      <li><i class="fas fa-star"></i> Leak Detection & Prevention</li>
+      <li><i class="fas fa-star"></i> Premium Garbage Disposal</li>
+      <li><i class="fas fa-star"></i> Luxury Appliance Hookups</li>
+     </ul>
+     <a href="#booking" class="btn btn-primary" data-service="Luxury Plumbing">Book This Service</a>
+    </div>
+   </div>
+   
+   <div class="services-grid" style="margin-top: var(--spacing-lg);">
+    <!-- Painting -->
+    <div class="card service-card">
+     <div class="service-icon">
+      <i class="fas fa-paint-roller"></i>
+     </div>
+     <h3>Premium Painting</h3>
+     <p>Luxury painting services with premium materials and techniques</p>
+     <ul class="service-list">
+      <li><i class="fas fa-star"></i> Designer Color Consultation</li>
+      <li><i class="fas fa-star"></i> Premium Paint Application</li>
+      <li><i class="fas fa-star"></i> Custom Trim & Detail Work</li>
+      <li><i class="fas fa-star"></i> Exterior Luxury Painting</li>
+      <li><i class="fas fa-star"></i> Texture & Finish Specialists</li>
+     </ul>
+     <a href="#booking" class="btn btn-primary" data-service="Premium Painting">Book This Service</a>
+    </div>
+    
+    <!-- Flooring -->
+    <div class="card service-card">
+     <div class="service-icon">
+      <i class="fas fa-border-style"></i>
+     </div>
+     <h3>Luxury Flooring</h3>
+     <p>Premium flooring installation with luxury materials</p>
+     <ul class="service-list">
+      <li><i class="fas fa-star"></i> Luxury Vinyl Plank Installation</li>
+      <li><i class="fas fa-star"></i> Premium Hardwood Flooring</li>
+      <li><i class="fas fa-star"></i> Custom Tile & Stone Work</li>
+      <li><i class="fas fa-star"></i> Designer Baseboards</li>
+      <li><i class="fas fa-star"></i> Floor Restoration & Repair</li>
+     </ul>
+     <a href="#booking" class="btn btn-primary" data-service="Luxury Flooring">Book This Service</a>
+    </div>
+    
+    <!-- Carpentry -->
+    <div class="card service-card">
+     <div class="service-icon">
+      <i class="fas fa-wood"></i>
+     </div>
+     <h3>Custom Carpentry</h3>
+     <p>Bespoke carpentry solutions for luxury homes</p>
+     <ul class="service-list">
+      <li><i class="fas fa-star"></i> Custom Built-Ins</li>
+      <li><i class="fas fa-star"></i> Premium Trim & Molding</li>
+      <li><i class="fas fa-star"></i> Luxury Closet Systems</li>
+      <li><i class="fas fa-star"></i> Custom Furniture Creation</li>
+      <li><i class="fas fa-star"></i> Architectural Details</li>
+     </ul>
+     <a href="#booking" class="btn btn-primary" data-service="Custom Carpentry">Book This Service</a>
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <!-- Booking Section -->
+ <section class="booking" id="booking">
+  <div class="container">
+   <div class="booking-container">
+    <div class="booking-content">
+     <h2>Premium Booking Experience</h2>
+     <p>Schedule your service with our premium booking system. Experience white-glove service from start to finish.</p>
+     
+     <ul class="booking-steps">
+      <li>
+       <div class="step-number">1</div>
+       <div>
+        <h4>Select Premium Service</h4>
+        <p>Choose from our curated collection of home services</p>
+       </div>
+      </li>
+      <li>
+       <div class="step-number">2</div>
+       <div>
+        <h4>Preferred Date & Time</h4>
+        <p>Select your ideal appointment window with premium scheduling</p>
+       </div>
+      </li>
+      <li>
+       <div class="step-number">3</div>
+       <div>
+        <h4> Consultation</h4>
+        <p>Receive a premium consultation and detailed project assessment</p>
+       </div>
+      </li>
+      <li>
+       <div class="step-number">4</div>
+       <div>
+        <h4>White-Glove Execution</h4>
+        <p>Experience flawless service execution with premium follow-up</p>
+       </div>
+      </li>
+     </ul>
+    </div>
+    
+    <div class="booking-form-container">
+     <form id="bookingForm" class="card booking-form">
+      <h3>Premium Service Request</h3>
+      
+      <div class="form-group">
+       <label for="service">Select Premium Service *</label>
+       <select id="service" class="form-control" required>
+        <option value="">Choose a premium service...</option>
+        <option value=" Appliance Repair"> Appliance Repair</option>
+        <option value="Premium Handyman">Premium Handyman</option>
+        <option value="Luxury Plumbing">Luxury Plumbing</option>
+        <option value="Premium Painting">Premium Painting</option>
+        <option value="Luxury Flooring">Luxury Flooring</option>
+        <option value="Custom Carpentry">Custom Carpentry</option>
+        <option value="Complete Home Renovation">Complete Home Renovation</option>
+       </select>
+      </div>
+      
+      <div class="form-row">
+       <div class="form-group">
+        <label for="date">Preferred Date *</label>
+        <input type="date" id="date" class="form-control" required>
+       </div>
+       
+       <div class="form-group">
+        <label for="time">Preferred Time *</label>
+        <select id="time" class="form-control" required>
+         <option value="">Select premium time slot...</option>
+         <option value="Morning (8am-12pm)">Morning (8am-12pm)</option>
+         <option value="Afternoon (12pm-4pm)">Afternoon (12pm-4pm)</option>
+         <option value="Evening (4pm-7pm)">Evening (4pm-7pm)</option>
+        </select>
+       </div>
+      </div>
+      
+      <div class="form-row">
+       <div class="form-group">
+        <label for="firstName">First Name *</label>
+        <input type="text" id="firstName" class="form-control" required>
+       </div>
+       
+       <div class="form-group">
+        <label for="lastName">Last Name *</label>
+        <input type="text" id="lastName" class="form-control" required>
+       </div>
+      </div>
+      
+      <div class="form-row">
+       <div class="form-group">
+        <label for="email">Email Address *</label>
+        <input type="email" id="email" class="form-control" required>
+       </div>
+       
+       <div class="form-group">
+        <label for="phone">Phone Number *</label>
+        <input type="tel" id="phone" class="form-control" required>
+       </div>
+      </div>
+      
+      <div class="form-group">
+       <label for="address">Service Address *</label>
+       <input type="text" id="address" class="form-control" placeholder="Enter your premium property address" required>
+      </div>
+      
+      <div class="form-group">
+       <label for="details">Service Details *</label>
+       <textarea id="details" class="form-control" placeholder="Describe your premium service requirements, special requests, or project vision..." required></textarea>
+      </div>
+      
+      <div class="form-group">
+       <label>Upload Project Photos (Optional)</label>
+       <div class="upload-area" id="uploadArea">
+        <i class="fas fa-cloud-upload-alt"></i>
+        <p class="upload-text">Drag & drop project photos or <span>browse</span></p>
+        <p class="upload-text" style="font-size: 0.875rem;">Supports high-resolution images up to 20MB</p>
+       </div>
+       <input type="file" id="fileUpload" multiple style="display: none;">
+      </div>
+      
+      <div class="form-submit">
+       <button type="submit" class="btn btn-primary" style="width: 100%; padding: var(--spacing-md); font-size: 1.25rem;">
+        <i class="fas fa-crown"></i> Request Premium Service
+       </button>
+      </div>
+     </form>
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <!-- Features Section -->
+ <section class="features" id="features">
+  <div class="container">
+   <div class="section-header">
+    <h2>Why Choose ServicePro </h2>
+    <p>Experience the difference of premium home service with our exclusive advantages</p>
+   </div>
+   
+   <div class="features-grid">
+    <div class="card feature-card">
+     <div class="feature-icon">
+      <i class="fas fa-gem"></i>
+     </div>
+     <h3>Premium Materials</h3>
+     <p>We use only the highest quality materials and premium brands for all our services.</p>
+    </div>
+    
+    <div class="card feature-card">
+     <div class="feature-icon">
+      <i class="fas fa-user-tie"></i>
+     </div>
+     <h3> Professionals</h3>
+     <p>Our team consists of master craftsmen with specialized training and certifications.</p>
+    </div>
+    
+    <div class="card feature-card">
+     <div class="feature-icon">
+      <i class="fas fa-shield-alt"></i>
+     </div>
+     <h3>Lifetime Warranty</h3>
+     <p>All our premium services come with an exclusive lifetime warranty on workmanship.</p>
+    </div>
+    
+    <div class="card feature-card">
+     <div class="feature-icon">
+      <i class="fas fa-clock"></i>
+     </div>
+     <h3>Priority Scheduling</h3>
+     <p>Premium clients receive priority scheduling and guaranteed appointment times.</p>
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <!-- Footer -->
+ <footer id="contact">
+  <div class="container">
+   <div class="footer-container">
+    <div class="footer-about">
+     <div class="footer-logo">ServicePro </div>
+     <p>Premium home service platform delivering excellence through certified professionals and premium materials.</p>
+     <p style="margin-top: var(--spacing-sm); color: var(--lavender); font-style: italic;">
+      <i class="fas fa-star"></i> Excellence in Every Detail
+     </p>
+    </div>
+    
+    <div class="footer-links">
+     <h4> Services</h4>
+     <ul>
+      <li><a href="#services" data-service=" Appliance Repair">Appliance Repair</a></li>
+      <li><a href="#services" data-service="Premium Handyman">Handyman Services</a></li>
+      <li><a href="#services" data-service="Luxury Plumbing">Plumbing Services</a></li>
+      <li><a href="#services" data-service="Premium Painting">Painting Services</a></li>
+     </ul>
+    </div>
+    
+    <div class="footer-links">
+     <h4>Premium Experience</h4>
+     <ul>
+      <li><a href="#gallery">Our Portfolio</a></li>
+      <li><a href="#features">Why Choose </a></li>
+      <li><a href="#booking">Book Premium Service</a></li>
+      <li><a href="#contact">VIP Client Support</a></li>
+     </ul>
+    </div>
+    
+    <div class="footer-contact">
+     <h4> Contact</h4>
+     <p><i class="fas fa-phone-alt"></i> (888) 555-</p>
+     <p><i class="fas fa-envelope"></i> @servicepro.com</p>
+     <p><i class="fas fa-map-marker-alt"></i> 123 Premium Plaza, Suite 1000</p>
+     <p><i class="fas fa-clock"></i> 24/7 Premium Support</p>
+    </div>
+   </div>
+   
+   <div class="copyright">
+    <p>&copy; 2023 ServicePro . All rights reserved. | Premium Home Service Platform</p>
+    <p style="margin-top: var(--spacing-xs); font-size: 0.75rem;">
+     <i class="fas fa-crown"></i> Experience the Difference
+    </p>
+   </div>
+  </div>
+ </footer>
+
+ <!-- Confirmation Modal -->
+ <div class="modal" id="confirmationModal">
+  <div class="modal-content">
+   <button class="close-modal" id="closeModal">&times;</button>
+   <div class="confirmation-icon">
+    <i class="fas fa-crown"></i>
+   </div>
+   <h3>Premium Service Request Confirmed!</h3>
+   <p>Thank you for choosing ServicePro . Your premium service request has been received.</p>
+   <p>Our concierge will contact you within 2 hours to discuss your project details.</p>
+   <div style="margin: var(--spacing-md) 0; padding: var(--spacing-md); background: rgba(139, 92, 246, 0.1); border-radius: var(--radius-sm); border: 1px solid rgba(139, 92, 246, 0.3);">
+    <p style="margin: 0; color: var(--lavender);"><strong> Reference:</strong> <span id="bookingRef">-</span></p>
+   </div>
+   <button class="btn btn-primary" id="closeModalBtn" style="margin-top: var(--spacing-md);">
+    <i class="fas fa-check"></i> Continue Premium Experience
+   </button>
+  </div>
+ </div>
+
+ <script>
+  // Mobile Menu Toggle
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const mainNav = document.getElementById('mainNav');
+  
+  mobileMenuBtn.addEventListener('click', () => {
+   mainNav.classList.toggle('active');
+   mobileMenuBtn.innerHTML = mainNav.classList.contains('active') 
+    ? '<i class="fas fa-times"></i>' 
+    : '<i class="fas fa-bars"></i>';
+  });
+  
+  // Close mobile menu when clicking a link
+  document.querySelectorAll('nav a').forEach(link => {
+   link.addEventListener('click', () => {
+    if (window.innerWidth <= 768) {
+     mainNav.classList.remove('active');
+     mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+    }
+   });
+  });
+  
+  // Set minimum date to today
+  const dateInput = document.getElementById('date');
+  const today = new Date().toISOString().split('T')[0];
+  dateInput.min = today;
+  
+  // Set a default date (tomorrow)
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  dateInput.value = tomorrow.toISOString().split('T')[0];
+  
+  // Generate a random booking reference
+  function generateBookingRef() {
+   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+   let ref = '-';
+   for (let i = 0; i < 6; i++) {
+    ref += chars.charAt(Math.floor(Math.random() * chars.length));
+   }
+   return ref;
+  }
+  
+  // Pre-fill service when clicking "Book This Service" buttons
+  document.querySelectorAll('[data-service]').forEach(button => {
+   button.addEventListener('click', (e) => {
+    e.preventDefault();
+    const service = button.getAttribute('data-service');
+    document.getElementById('service').value = service;
+    
+    // Scroll to booking form smoothly
+    document.getElementById('booking').scrollIntoView({ 
+     behavior: 'smooth',
+     block: 'start'
+    });
+   });
+  });
+  
+  // File upload area functionality
+  const uploadArea = document.getElementById('uploadArea');
+  const fileUpload = document.getElementById('fileUpload');
+  
+  uploadArea.addEventListener('click', () => {
+   fileUpload.click();
+  });
+  
+  uploadArea.addEventListener('dragover', (e) => {
+   e.preventDefault();
+   uploadArea.style.borderColor = 'var(--violet)';
+   uploadArea.style.background = 'rgba(139, 92, 246, 0.1)';
+  });
+  
+  uploadArea.addEventListener('dragleave', () => {
+   uploadArea.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+   uploadArea.style.background = 'transparent';
+  });
+  
+  uploadArea.addEventListener('drop', (e) => {
+   e.preventDefault();
+   fileUpload.files = e.dataTransfer.files;
+   updateUploadDisplay();
+  });
+  
+  fileUpload.addEventListener('change', updateUploadDisplay);
+  
+  function updateUploadDisplay() {
+   if (fileUpload.files.length > 0) {
+    uploadArea.innerHTML = `
+     <i class="fas fa-check-circle" style="color: var(--lavender);"></i>
+     <p class="upload-text">${fileUpload.files.length} premium file(s) selected</p>
+    `;
+   }
+  }
+  
+  // Form submission
+  const bookingForm = document.getElementById('bookingForm');
+  const confirmationModal = document.getElementById('confirmationModal');
+  const closeModalBtn = document.getElementById('closeModalBtn');
+  const closeModal = document.getElementById('closeModal');
+  const bookingRefSpan = document.getElementById('bookingRef');
+  
+  bookingForm.addEventListener('submit', (e) => {
+   e.preventDefault();
+   
+   // Generate booking reference
+   const bookingRef = generateBookingRef();
+   bookingRefSpan.textContent = bookingRef;
+   
+   // Show confirmation modal
+   confirmationModal.style.display = 'flex';
+   
+   // Reset form
+   bookingForm.reset();
+   
+   // Reset date to tomorrow
+   const newTomorrow = new Date();
+   newTomorrow.setDate(newTomorrow.getDate() + 1);
+   dateInput.value = newTomorrow.toISOString().split('T')[0];
+   
+   // Reset upload area
+   uploadArea.innerHTML = `
+    <i class="fas fa-cloud-upload-alt"></i>
+    <p class="upload-text">Drag & drop project photos or <span>browse</span></p>
+    <p class="upload-text" style="font-size: 0.875rem;">Supports high-resolution images up to 20MB</p>
+   `;
+   fileUpload.value = '';
+  });
+  
+  // Close modal
+  closeModalBtn.addEventListener('click', () => {
+   confirmationModal.style.display = 'none';
+  });
+  
+  closeModal.addEventListener('click', () => {
+   confirmationModal.style.display = 'none';
+  });
+  
+  // Close modal when clicking outside
+  window.addEventListener('click', (e) => {
+   if (e.target === confirmationModal) {
+    confirmationModal.style.display = 'none';
+   }
+  });
+  
+  // Footer service links
+  document.querySelectorAll('.footer-links a[data-service]').forEach(link => {
+   link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const service = link.getAttribute('data-service');
+    document.getElementById('service').value = service;
+    
+    // Scroll to booking form
+    document.getElementById('booking').scrollIntoView({ 
+     behavior: 'smooth',
+     block: 'start'
+    });
+   });
+  });
+  
+  // Add scroll animations
+  const observerOptions = {
+   threshold: 0.1,
+   rootMargin: '0px 0px -50px 0px'
+  };
+  
+  const observer = new IntersectionObserver((entries) => {
+   entries.forEach(entry => {
+    if (entry.isIntersecting) {
+     if (entry.target.classList.contains('fade-in-up')) {
+      entry.target.style.animationPlayState = 'running';
+     }
+    }
+   });
+  }, observerOptions);
+  
+  // Observe all animated elements
+  document.querySelectorAll('.fade-in-up, .gallery-item, .service-card, .feature-card, .booking-steps li, .booking-form').forEach(el => {
+   if (!el.classList.contains('fade-in-up')) {
+    el.classList.add('fade-in-up');
+   }
+   observer.observe(el);
+  });
+  
+  // Blob mouse interaction
+  document.addEventListener('mousemove', (e) => {
+   const blob1 = document.querySelector('.blob-1');
+   const blob2 = document.querySelector('.blob-2');
+   const blob3 = document.querySelector('.blob-3');
+   
+   const x = e.clientX / window.innerWidth;
+   const y = e.clientY / window.innerHeight;
+   
+   blob1.style.transform = `translate(${x * 50}px, ${y * 50}px) scale(1.1)`;
+   blob2.style.transform = `translate(${-x * 30}px, ${-y * 30}px) scale(1.05)`;
+   blob3.style.transform = `translate(${x * 20}px, ${-y * 20}px) scale(0.95)`;
+  });
+ </script>
+</body>
+
+</html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ServicePro - Plataforma de Reserva de Servicios</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
